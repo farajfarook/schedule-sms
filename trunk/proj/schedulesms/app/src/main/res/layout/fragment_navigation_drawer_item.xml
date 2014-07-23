@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:id="@+id/drawer_item_image"
+        android:src="@drawable/drawer_overview" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menu Title"
+        android:id="@+id/drawer_item_title"
+        android:layout_gravity="center_vertical"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#fffbfffb" />
+</LinearLayout>
