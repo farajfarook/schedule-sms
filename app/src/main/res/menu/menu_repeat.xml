@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" >
 
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+    <item android:id="@+id/action_repeat_new"
+        android:title="@string/action_repeat_new"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        android:icon="@drawable/action_new"
+        app:showAsAction="always" />
 </menu>

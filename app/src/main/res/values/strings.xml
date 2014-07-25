@@ -2,12 +2,17 @@
 <resources>
 
     <string name="app_name">Schedule SMS</string>
+
     <string name="title_section_overview">Schedule SMS</string>
-    <string name="title_section_overview_title">Home</string>
+    <string name="title_section_overview_title">Schedule overview</string>
     <string name="title_section_onetime">One time schedule</string>
     <string name="title_section_repeat">Repeat schedule</string>
+    <string name="title_section_setting">Settings</string>
+
     <string name="navigation_drawer_open">Open drawer</string>
     <string name="navigation_drawer_close">Close drawer</string>
     <string name="action_settings">Settings</string>
+    <string name="action_onetime_new">New</string>
+    <string name="action_repeat_new">New</string>
 
 </resources>

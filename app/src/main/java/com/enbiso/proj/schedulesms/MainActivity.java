@@ -1,6 +1,8 @@
 package com.enbiso.proj.schedulesms;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -12,9 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Toast;
 
+import com.enbiso.proj.schedulesms.data.DatabaseHelper;
+import com.enbiso.proj.schedulesms.data.core.MessageHelper;
 import com.enbiso.proj.schedulesms.form.onetime.OnetimePopulator;
 import com.enbiso.proj.schedulesms.form.overview.OverviewPopulator;
+import com.enbiso.proj.schedulesms.form.repeat.RepeatPopulator;
 import com.enbiso.proj.schedulesms.navigation.DrawerFragment;
 
 
@@ -24,6 +30,9 @@ public class MainActivity extends ActionBarActivity
     public static final int PAGE_OVERVIEW = 1;
     public static final int PAGE_ONETIME = 2;
     public static final int PAGE_REPEAT = 3;
+    public static final int PAGE_SETTING = 4;
+
+    public static final int SETTING_RESULT = 2;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -33,12 +42,39 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private int mIcon;
     private Integer menuResource;
+
+    //populaters
+    private OverviewPopulator overviewPopulator;
+    private OnetimePopulator onetimePopulator;
+    private RepeatPopulator repeatPopulator;
+
+    public OverviewPopulator getOverviewPopulator() {
+        return overviewPopulator;
+    }
+
+    public OnetimePopulator getOnetimePopulator() {
+        return onetimePopulator;
+    }
+
+    public RepeatPopulator getRepeatPopulator() {
+        return repeatPopulator;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Initialize database helper
+        DatabaseHelper.init(getApplicationContext());
+        DatabaseHelper helper = DatabaseHelper.getInstance();
+        helper.addHelper(new MessageHelper(getApplicationContext()));
+
+        overviewPopulator = new OverviewPopulator(this);
+        onetimePopulator = new OnetimePopulator(this);
+        repeatPopulator = new RepeatPopulator(this);
 
         mDrawerFragment = (DrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -52,25 +88,36 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        // update the menu_overview content by replacing fragments
+        loadPage(position + 1, false);
+    }
+
+    public void loadPage(int pageId, boolean manual){
+        // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1, this))
+                .replace(R.id.container, PlaceholderFragment.newInstance(pageId, this))
                 .commit();
+        if(manual){
+            onSectionAttached(pageId);
+            supportInvalidateOptionsMenu();
+        }
     }
 
     public void onSectionAttached(int number) {
         switch (number) {
             case PAGE_OVERVIEW:
                 mTitle = getString(R.string.title_section_overview);
+                mIcon = R.drawable.drawer_overview;
                 menuResource = R.menu.menu_overview;
                 break;
             case PAGE_ONETIME:
                 mTitle = getString(R.string.title_section_onetime);
+                mIcon = R.drawable.drawer_onetime;
                 menuResource = R.menu.menu_onetime;
                 break;
             case PAGE_REPEAT:
                 mTitle = getString(R.string.title_section_repeat);
+                mIcon = R.drawable.drawer_repeat;
                 menuResource = R.menu.menu_repeat;
                 break;
         }
@@ -81,6 +128,7 @@ public class MainActivity extends ActionBarActivity
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
+        actionBar.setIcon(mIcon);
     }
 
 
@@ -105,9 +153,18 @@ public class MainActivity extends ActionBarActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()){
-            //@todo implement actions
+            case R.id.action_onetime_new:
+                onetimePopulator.setupNew();
+                break;
+            case R.id.action_repeat_new:
+                repeatPopulator.setupNew();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startSettingsActivity() {
+        startActivityForResult(new Intent(getApplicationContext(), SettingsActivity.class), SETTING_RESULT);
     }
 
     /**
@@ -120,7 +177,7 @@ public class MainActivity extends ActionBarActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        private MainActivity mainActivity;
+        private Context context;
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -139,7 +196,7 @@ public class MainActivity extends ActionBarActivity
         }
 
         public void setMainActivity(MainActivity mainActivity) {
-            this.mainActivity = mainActivity;
+            this.context = mainActivity;
         }
 
         @Override
@@ -156,6 +213,9 @@ public class MainActivity extends ActionBarActivity
                 case PAGE_REPEAT:
                     rootView = inflater.inflate(R.layout.fragment_repeat, container, false);
                     break;
+                case PAGE_SETTING:
+                    ((MainActivity)context).startSettingsActivity();
+                    break;
             }
             return rootView;
         }
@@ -167,5 +227,4 @@ public class MainActivity extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
 }

@@ -106,6 +106,7 @@ public class DrawerFragment extends Fragment {
         drawerItems.add(new DrawerItem(R.string.title_section_overview_title, R.drawable.drawer_overview));
         drawerItems.add(new DrawerItem(R.string.title_section_onetime, R.drawable.drawer_onetime));
         drawerItems.add(new DrawerItem(R.string.title_section_repeat, R.drawable.drawer_repeat));
+        drawerItems.add(new DrawerItem(R.string.title_section_setting, R.drawable.drawer_setting ));
         mDrawerListView.setAdapter(new DrawerAdapter(getActionBar().getThemedContext(), drawerItems));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
