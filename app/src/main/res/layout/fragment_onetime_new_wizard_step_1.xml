@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
-    android:id="@+id/">
+    android:padding="15dp">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -18,21 +18,16 @@
             android:ems="10"
             android:id="@+id/onetime_phone"
             android:hint="Phone Number"
-            android:layout_marginRight="82dp" />
+            android:layout_marginRight="52dp" />
 
         <ImageButton
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:id="@+id/imageButton"
-            android:src="@drawable/add_contact"
-            android:layout_marginLeft="-37dp" />
-
-        <ImageButton
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:id="@+id/imageButton2"
             android:src="@drawable/add_number"
-            android:layout_marginLeft="-72dp" />
+            android:layout_marginLeft="-43dp"
+            android:background="@android:color/transparent" />
+
     </LinearLayout>
 
     <ListView
@@ -40,6 +35,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/listView"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp" />
+        android:layout_weight="0.35"
+        tools:listitem="@layout/contact_list_item" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView2"
+        android:layout_weight="0.65"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>
