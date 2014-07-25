@@ -12,10 +12,15 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <!-- USER PERMISSION -->
+        <uses-permission android:name="android.permission.SEND_SMS"/>
     </application>
 
 </manifest>

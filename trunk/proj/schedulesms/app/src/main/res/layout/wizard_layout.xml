@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1"
+    android:minWidth="200dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:background="#ff242424">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/wizard_icon"
+            android:src="@drawable/wizard_icon"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="heading"
+            android:id="@+id/wizard_heading"
+            android:padding="10dp"
+            android:textColor="@android:color/white"
+            android:textSize="18dp"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:id="@+id/wizard_frame"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="50dp"></FrameLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:weightSum="1"
+        android:id="@+id/wizard_button_container"
+        android:background="#ff262626"
+        android:layout_marginTop="-50dp"
+        android:layout_gravity="center_vertical|bottom">
+
+        <Button
+            android:layout_weight=".5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Left Button"
+            android:id="@+id/wizard_left_button"
+            android:textColor="#ff1cb0ff"
+            android:background="@android:color/transparent"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_weight=".5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Right Button"
+            android:id="@+id/wizard_rigth_button"
+            android:textColor="#ff1cb0ff"
+            android:background="@android:color/transparent"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>
