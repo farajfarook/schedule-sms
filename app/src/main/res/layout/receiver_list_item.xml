@@ -15,24 +15,25 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Full Name"
-            android:id="@+id/contact_name"
+            android:text="XXX XXXX XXXX"
+            android:id="@+id/receiver_number"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="XXX XXXX XXXX"
-            android:id="@+id/contact_number" />
+            android:text="Full Name"
+            android:id="@+id/receiver_name" />
+
     </LinearLayout>
 
     <ImageButton
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:id="@+id/contact_add"
+        android:id="@+id/receiver_remove"
         android:layout_gravity="center_vertical|right"
         android:layout_marginLeft="-38dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/add_number" />
+        android:src="@drawable/remove_number" />
 
 </LinearLayout>
