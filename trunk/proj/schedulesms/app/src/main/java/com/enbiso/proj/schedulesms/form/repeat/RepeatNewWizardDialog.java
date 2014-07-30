@@ -1,8 +1,6 @@
 package com.enbiso.proj.schedulesms.form.repeat;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.view.View;
 
 import com.enbiso.proj.schedulesms.R;
 import com.enbiso.proj.schedulesms.form.WizardDialog;
@@ -22,7 +20,7 @@ public class RepeatNewWizardDialog extends WizardDialog {
 
         @Override
         public int getResource() {
-            return R.layout.fragment_onetime_new_wizard_step_1;
+            return R.layout.new_wizard_step_add_number;
         }
 
         @Override

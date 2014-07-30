@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:ems="10"
+            android:id="@+id/new_wizard_phone"
+            android:hint="Number or Name"
+            android:layout_marginRight="52dp" />
+
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/new_wizard_phone_add"
+            android:src="@drawable/add_number"
+            android:layout_marginLeft="-43dp"
+            android:background="@android:color/transparent" />
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/new_wizard_contact_list"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.5"
+        tools:listitem="@layout/contact_list_item"
+        android:layout_marginBottom="5dp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="1dp"
+        android:background="@android:color/darker_gray">
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Receivers"
+        android:id="@+id/textView"
+        android:layout_gravity="left"
+        android:background="@android:color/darker_gray"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:textColor="@android:color/white" />
+
+    <ListView
+        tools:listitem="@layout/receiver_list_item"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/new_wizard_receiver_list"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.5"
+        android:layout_marginTop="5dp" />
+
+</LinearLayout>
