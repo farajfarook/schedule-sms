@@ -1,4 +1,4 @@
-package com.enbiso.proj.schedulesms.form;
+package com.enbiso.proj.schedulesms.form.wizard;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,24 +15,34 @@ import java.util.List;
 /**
  * Created by farflk on 7/30/2014.
  */
-public abstract class ContactListAdapter extends ArrayAdapter<ContactItem> {
+public class ContactListAdapter extends ArrayAdapter<ContactItem> {
 
-    protected Context context;
-    protected int resourceId;
-    protected List<ContactItem> contactItems;
+    private Context context;
+    private int resourceId;
+    private List<ContactItem> contactItems;
+    private NewWizardDialog wizardDialog;
 
-    public ContactListAdapter(Context context, List<ContactItem> contactItems) {
+    public ContactListAdapter(Context context, List<ContactItem> contactItems, NewWizardDialog wizardDialog) {
         super(context, R.layout.contact_list_item, contactItems);
         this.context = context;
         this.resourceId = R.layout.contact_list_item;
         this.contactItems = contactItems;
+        this.wizardDialog = wizardDialog;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = initView(convertView);
-        ((TextView)convertView.findViewById(R.id.contact_name)).setText(contactItems.get(position).getName());
-        ((TextView)convertView.findViewById(R.id.contact_number)).setText(contactItems.get(position).getNumber());
+        final ContactItem contactItem = contactItems.get(position);
+        ((TextView)convertView.findViewById(R.id.contact_name)).setText(contactItem.getName());
+        ((TextView)convertView.findViewById(R.id.contact_number)).setText(contactItem.getNumber());
+        ((ImageButton)convertView.findViewById(R.id.contact_add)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                wizardDialog.addReceiver(contactItem);
+                wizardDialog.updateReceiverList();
+            }
+        });
         return convertView;
     }
 

@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" >
 
-    <item android:id="@+id/action_onetime_new"
-        android:title="@string/action_onetime_new"
+    <item android:id="@+id/action_schedule_new"
+        android:title="@string/action_schedule_new"
         android:orderInCategory="100"
-        android:icon="@drawable/action_new"
+        android:icon="@drawable/action_schedule_new"
         app:showAsAction="always" />
 </menu>

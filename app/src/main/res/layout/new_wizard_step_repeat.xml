@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:weightSum="1"
+android:padding="15dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/darker_gray"
+        android:id="@+id/linearLayout" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Repeat Schedule"
+        android:id="@+id/textView"
+        android:textColor="@android:color/white"
+        android:background="@android:color/darker_gray"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable repeat"
+        android:id="@+id/new_wizard_repeat_enable"
+        android:checked="false"
+        android:layout_marginTop="10dp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="10dp"
+        android:id="@+id/new_wizard_repeat_settings">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/darker_gray"
+            android:id="@+id/linearLayout2"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repeat after each"
+            android:id="@+id/textView3"
+            android:textColor="@android:color/white"
+            android:background="@android:color/darker_gray"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/new_wizard_repeat_value"
+            android:padding="10dp"
+            android:text="1"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="bottom" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/new_wizard_repeat_type"
+            android:entries="@array/repeat_list"
+            android:spinnerMode="dialog"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="bottom" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/darker_gray"
+            android:id="@+id/linearLayout3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valid till"
+            android:id="@+id/textView4"
+            android:textColor="@android:color/white"
+            android:background="@android:color/darker_gray"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="yyyy-MM-DD"
+                android:id="@+id/new_wizard_repeat_validtill"
+                android:layout_marginRight="55dp"
+                android:layout_gravity="center_vertical"
+                android:textSize="18dp"
+                android:padding="10dp" />
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/new_wizard_repeat_validtill_change"
+                android:layout_marginLeft="-60dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/calendar"
+                android:background="@android:color/transparent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

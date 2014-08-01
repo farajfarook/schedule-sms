@@ -13,8 +13,8 @@ import java.util.Map;
 public class AbstractModel {
     protected String _id;
     protected String _state;
-    protected int _created;
-    protected int _version;
+    protected String _created;
+    protected String _version;
 
     public String get_id() {
         return _id;
@@ -24,19 +24,19 @@ public class AbstractModel {
         this._id = _id;
     }
 
-    public int get_created() {
+    public String get_created() {
         return _created;
     }
 
-    public void set_created(int _created) {
+    public void set_created(String _created) {
         this._created = _created;
     }
 
-    public int get_version() {
+    public String get_version() {
         return _version;
     }
 
-    public void set_version(int _version) {
+    public void set_version(String _version) {
         this._version = _version;
     }
 
@@ -60,8 +60,8 @@ public class AbstractModel {
     public void populateWith(Map<String, Object> data){
         this._id = fetchData(data, "_id");
         this._state = fetchData(data, "_state");
-        this._created = fetchDataInteger(data, "_created");
-        this._version = fetchDataInteger(data, "_version");
+        this._created = fetchData(data, "_created");
+        this._version = fetchData(data, "_version");
     }
 
     public String fetchData(Map<String, Object> data, String name){

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical" android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:weightSum="1"
+android:padding="15dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/darker_gray"
+        android:id="@+id/linearLayout" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scheduling date"
+        android:id="@+id/textView"
+        android:textColor="@android:color/white"
+        android:background="@android:color/darker_gray"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <DatePicker
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/new_wizard_schedule_date"
+        android:calendarViewShown="false"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center">
+    </DatePicker>
+</LinearLayout>

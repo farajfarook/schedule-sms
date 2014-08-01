@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="1dp"
+        android:background="@android:color/darker_gray"></LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Message"
+        android:id="@+id/textView"
+        android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/new_wizard_message"
+        android:layout_weight="0.5"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="top" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="1dp"
+        android:background="@android:color/darker_gray"
+        android:id="@+id/linearLayout"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select from templates"
+        android:id="@+id/textView2"
+        android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/new_wizard_template_list"
+        android:layout_weight="0.5"
+        android:layout_marginTop="5dp"
+        tools:listitem="@layout/template_list_item" />
+</LinearLayout>

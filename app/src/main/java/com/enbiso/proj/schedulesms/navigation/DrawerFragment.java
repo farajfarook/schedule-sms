@@ -18,9 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.enbiso.proj.schedulesms.R;
 
@@ -104,8 +102,7 @@ public class DrawerFragment extends Fragment {
         });
         List<DrawerItem> drawerItems = new ArrayList<DrawerItem>();
         drawerItems.add(new DrawerItem(R.string.title_section_overview_title, R.drawable.drawer_overview));
-        drawerItems.add(new DrawerItem(R.string.title_section_onetime, R.drawable.drawer_onetime));
-        drawerItems.add(new DrawerItem(R.string.title_section_repeat, R.drawable.drawer_repeat));
+        drawerItems.add(new DrawerItem(R.string.title_section_repeat, R.drawable.drawer_schedule));
         drawerItems.add(new DrawerItem(R.string.title_section_setting, R.drawable.drawer_setting ));
         mDrawerListView.setAdapter(new DrawerAdapter(getActionBar().getThemedContext(), drawerItems));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);

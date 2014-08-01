@@ -18,16 +18,19 @@ public class ScheduleHelper extends AbstractHelper{
     public ScheduleHelper(Context context) {
         super(context);
         this.tableName = "core_tbl_schedule";
-
+        this.columns.add("repeat_enable TEXT");
+        this.columns.add("repeat_valid_till_date TEXT");
+        this.columns.add("repeat_type TEXT");
+        this.columns.add("repeat_value TEXT");
         this.columns.add("description TEXT");
-        this.columns.add("schedule_data TEXT");
+        this.columns.add("schedule_date TEXT");
         this.columns.add("receivers TEXT");
         this.columns.add("message TEXT");
     }
 
     @Override
     protected AbstractModel getModelInstance() {
-        return new Message();
+        return new Schedule();
     }
 
     @Override
