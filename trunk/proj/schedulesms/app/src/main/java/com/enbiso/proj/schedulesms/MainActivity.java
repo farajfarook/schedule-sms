@@ -14,13 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.Toast;
 
 import com.enbiso.proj.schedulesms.data.DatabaseHelper;
 import com.enbiso.proj.schedulesms.data.core.MessageHelper;
-import com.enbiso.proj.schedulesms.form.onetime.OnetimePopulator;
+import com.enbiso.proj.schedulesms.data.core.ScheduleHelper;
 import com.enbiso.proj.schedulesms.form.overview.OverviewPopulator;
-import com.enbiso.proj.schedulesms.form.repeat.RepeatPopulator;
+import com.enbiso.proj.schedulesms.form.schedule.SchedulePopulator;
+import com.enbiso.proj.schedulesms.form.wizard.NewWizardDialog;
 import com.enbiso.proj.schedulesms.navigation.DrawerFragment;
 
 
@@ -28,9 +28,8 @@ public class MainActivity extends ActionBarActivity
         implements DrawerFragment.NavigationDrawerCallbacks {
 
     public static final int PAGE_OVERVIEW = 1;
-    public static final int PAGE_ONETIME = 2;
-    public static final int PAGE_REPEAT = 3;
-    public static final int PAGE_SETTING = 4;
+    public static final int PAGE_SCHEDULE = 2;
+    public static final int PAGE_SETTING = 3;
 
     public static final int SETTING_RESULT = 2;
     /**
@@ -47,19 +46,13 @@ public class MainActivity extends ActionBarActivity
 
     //populaters
     private OverviewPopulator overviewPopulator;
-    private OnetimePopulator onetimePopulator;
-    private RepeatPopulator repeatPopulator;
+    private SchedulePopulator schedulePopulator;
 
     public OverviewPopulator getOverviewPopulator() {
         return overviewPopulator;
     }
-
-    public OnetimePopulator getOnetimePopulator() {
-        return onetimePopulator;
-    }
-
-    public RepeatPopulator getRepeatPopulator() {
-        return repeatPopulator;
+    public SchedulePopulator getSchedulePopulator() {
+        return schedulePopulator;
     }
 
     @Override
@@ -71,10 +64,10 @@ public class MainActivity extends ActionBarActivity
         DatabaseHelper.init(getApplicationContext());
         DatabaseHelper helper = DatabaseHelper.getInstance();
         helper.addHelper(new MessageHelper(getApplicationContext()));
+        helper.addHelper(new ScheduleHelper(getApplicationContext()));
 
         overviewPopulator = new OverviewPopulator(this);
-        onetimePopulator = new OnetimePopulator(this);
-        repeatPopulator = new RepeatPopulator(this);
+        schedulePopulator = new SchedulePopulator(this);
 
         mDrawerFragment = (DrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -110,15 +103,10 @@ public class MainActivity extends ActionBarActivity
                 mIcon = R.drawable.drawer_overview;
                 menuResource = R.menu.menu_overview;
                 break;
-            case PAGE_ONETIME:
-                mTitle = getString(R.string.title_section_onetime);
-                mIcon = R.drawable.drawer_onetime;
-                menuResource = R.menu.menu_onetime;
-                break;
-            case PAGE_REPEAT:
+            case PAGE_SCHEDULE:
                 mTitle = getString(R.string.title_section_repeat);
-                mIcon = R.drawable.drawer_repeat;
-                menuResource = R.menu.menu_repeat;
+                mIcon = R.drawable.drawer_schedule;
+                menuResource = R.menu.menu_schedule;
                 break;
         }
     }
@@ -153,11 +141,8 @@ public class MainActivity extends ActionBarActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()){
-            case R.id.action_onetime_new:
-                onetimePopulator.setupNew();
-                break;
-            case R.id.action_repeat_new:
-                repeatPopulator.setupNew();
+            case R.id.action_schedule_new:
+                new NewWizardDialog(this).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -206,12 +191,11 @@ public class MainActivity extends ActionBarActivity
             switch (getArguments().getInt(ARG_SECTION_NUMBER)){
                 case PAGE_OVERVIEW:
                     rootView = inflater.inflate(R.layout.fragment_overview, container, false);
+                    ((MainActivity)context).getOverviewPopulator().setup(rootView);
                     break;
-                case PAGE_ONETIME:
-                    rootView = inflater.inflate(R.layout.fragment_onetime, container, false);
-                    break;
-                case PAGE_REPEAT:
-                    rootView = inflater.inflate(R.layout.fragment_repeat, container, false);
+                case PAGE_SCHEDULE:
+                    rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
+                    ((MainActivity)context).getSchedulePopulator().setup(rootView);
                     break;
                 case PAGE_SETTING:
                     ((MainActivity)context).startSettingsActivity();

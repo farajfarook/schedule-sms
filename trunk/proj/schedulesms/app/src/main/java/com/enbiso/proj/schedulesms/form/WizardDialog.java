@@ -96,6 +96,10 @@ abstract public class WizardDialog{
         }
     }
 
+    public View findViewById(int id) {
+        return dialog.findViewById(id);
+    }
+
     public void setTitle(String titleText) {
         this.titleText = titleText;
     }

@@ -53,10 +53,10 @@ public abstract class AbstractHelper {
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-       // String sql = "DROP TABLE IF EXISTS " + tableName;
-       // Log.i("DB", sql);
-       // db.execSQL(sql);
-       // onCreate(db);
+        String sql = "DROP TABLE IF EXISTS " + tableName;
+        Log.i("DB", sql);
+        db.execSQL(sql);
+        onCreate(db);
     }
 
     public boolean create(AbstractModel model) {

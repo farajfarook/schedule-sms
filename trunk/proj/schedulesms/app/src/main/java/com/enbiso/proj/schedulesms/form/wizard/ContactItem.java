@@ -1,4 +1,4 @@
-package com.enbiso.proj.schedulesms.form;
+package com.enbiso.proj.schedulesms.form.wizard;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -22,6 +22,11 @@ public class ContactItem {
         this.number = number;
     }
 
+    public ContactItem(String number) {
+        this.number = number;
+        this.name = "unknown";
+    }
+
     public String getName() {
         return name;
     }
@@ -33,17 +38,17 @@ public class ContactItem {
     public static List<ContactItem> fetchContactItems(Context context, String nameSearch){
         List<ContactItem> contactItems = new ArrayList<ContactItem>();
         ContentResolver contentResolver = ((MainActivity) context).getContentResolver();
-        String[] projection = null;//new String[2];
-       // projection[0] = ContactsContract.Contacts.DISPLAY_NAME;
-       // projection[1] = ContactsContract.Contacts.HAS_PHONE_NUMBER;
         String selection = null;
         String[] selectionArgs = null;
-        //if(nameSearch != null){
-        //    selection = ContactsContract.Contacts.DISPLAY_NAME + " like ? ";
-        //    selectionArgs = new String[1];
-        //    selectionArgs[1] = nameSearch;
-        //}
-        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, projection, selection, selectionArgs, null);
+        if(nameSearch != null){
+            if(!nameSearch.equals("")) {
+                nameSearch = "%" + nameSearch + "%";
+                selection = ContactsContract.Contacts.DISPLAY_NAME + " like ? ";
+                selectionArgs = new String[1];
+                selectionArgs[0] = nameSearch;
+            }
+        }
+        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, selection, selectionArgs, null);
         while (cursor.moveToNext()) {
             if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
                 String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
