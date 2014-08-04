@@ -39,7 +39,7 @@ public class ReceiverListAdapter extends ArrayAdapter<ContactItem> {
         ((ImageButton)convertView.findViewById(R.id.receiver_remove)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                wizardDialog.removeReceiver(contactItem);
+                wizardDialog.getSchedule().removeReceiver(contactItem);
                 wizardDialog.updateReceiverList();
             }
         });

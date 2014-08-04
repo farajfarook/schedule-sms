@@ -14,7 +14,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:id="@+id/schedule_item_icon"
-            android:src="@drawable/calendar_clock"
+            android:src="@drawable/schedule_repeat"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="10dp" />
 

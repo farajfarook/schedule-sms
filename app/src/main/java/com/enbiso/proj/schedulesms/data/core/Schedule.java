@@ -5,8 +5,12 @@ import android.content.ContentValues;
 import com.enbiso.proj.schedulesms.data.AbstractModel;
 import com.enbiso.proj.schedulesms.form.wizard.ContactItem;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -14,14 +18,13 @@ import java.util.Map;
  * Created by farflk on 7/24/2014.
  */
 public class Schedule extends AbstractModel{
-    private String type;
     private String description;
-    private String repeatEnable;
-    private String scheduleDate;
-    private String repeatValidTillDate;
+    private String repeatEnable = String.valueOf(false);
+    private Calendar scheduleDate = Calendar.getInstance();
+    private Calendar repeatValidTillDate = Calendar.getInstance();
     private String repeatType;
-    private String repeatValue;
-    private List<ContactItem> receivers;
+    private String repeatValue = "1";
+    private List<ContactItem> receivers = new ArrayList<ContactItem>();
     private String message;
 
     private List<Message> messages;
@@ -30,8 +33,8 @@ public class Schedule extends AbstractModel{
         ContentValues contentValues = super.getContentValues();
         contentValues.put("description", description);
         contentValues.put("repeat_enable", repeatEnable);
-        contentValues.put("schedule_date", scheduleDate);
-        contentValues.put("repeat_valid_till_date", repeatValidTillDate);
+        contentValues.put("schedule_date", dateTimeFormat.format(scheduleDate.getTime()));
+        contentValues.put("repeat_valid_till_date", dateTimeFormat.format(repeatValidTillDate.getTime()));
         contentValues.put("repeat_type", repeatType);
         contentValues.put("repeat_value", repeatValue);
         contentValues.put("receivers", encodeReceiverList(receivers));
@@ -43,11 +46,11 @@ public class Schedule extends AbstractModel{
     public void populateWith(Map<String, Object> data) {
         super.populateWith(data);
         description = fetchData(data, "description");
-        repeatEnable = fetchData(data, "repeat_enable");
-        scheduleDate = fetchData(data, "schedule_date");
-        repeatValidTillDate = fetchData(data, "repeat_valid_till_date");
+        repeatEnable = fetchData(data, "repeat_enable", String.valueOf(false));
+        scheduleDate = fetchDataCalender(data, "schedule_date");
+        repeatValidTillDate = fetchDataCalender(data, "repeat_valid_till_date");
         repeatType = fetchData(data, "repeat_type");
-        repeatValue = fetchData(data, "repeat_value");
+        repeatValue = fetchData(data, "repeat_value", "1");
         receivers = decodeReceiverString(fetchData(data, "receivers"));
         message = fetchData(data, "message");
     }
@@ -77,14 +80,6 @@ public class Schedule extends AbstractModel{
         this.messages = messages;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -101,20 +96,29 @@ public class Schedule extends AbstractModel{
         this.repeatEnable = repeatEnable;
     }
 
-    public String getScheduleDate() {
+    public Calendar getScheduleDate() {
         return scheduleDate;
     }
 
-    public void setScheduleDate(String scheduleDate) {
+    public void setScheduleDate(Calendar scheduleDate) {
         this.scheduleDate = scheduleDate;
     }
 
-    public String getRepeatValidTillDate() {
+    public Calendar getRepeatValidTillDate() {
         return repeatValidTillDate;
     }
 
-    public void setRepeatValidTillDate(String repeatValidTillDate) {
+    public void setRepeatValidTillDate(Calendar repeatValidTillDate) {
         this.repeatValidTillDate = repeatValidTillDate;
+    }
+
+    public int getRepeatTypeSelected(String[] types){
+        for (int i = 0; i < types.length; i++) {
+            if(types[i].equalsIgnoreCase(repeatType)){
+                return i;
+            }
+        }
+        return 0;
     }
 
     public String getRepeatType() {
@@ -150,7 +154,7 @@ public class Schedule extends AbstractModel{
         if(receiverStr.length() <= limit){
             return  receiverStr;
         }else {
-            return receiverStr.substring(0, limit);
+            return receiverStr.substring(0, limit) + "...";
         }
     }
 
@@ -162,11 +166,24 @@ public class Schedule extends AbstractModel{
         if(message.length() <= limit){
             return  message;
         }else {
-            return message.substring(0, limit);
+            return message.substring(0, limit) + "...";
         }
     }
 
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public boolean addReceiver(ContactItem contactItem) {
+        if(!receivers.contains(contactItem)) {
+            return receivers.add(contactItem);
+        }else{
+            return false;
+        }
+    }
+
+    public boolean removeReceiver(ContactItem contactItem) {
+        return receivers.remove(contactItem);
+    }
+
 }

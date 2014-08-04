@@ -1,6 +1,7 @@
 package com.enbiso.proj.schedulesms;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -66,6 +67,11 @@ public class MainActivity extends ActionBarActivity
         helper.addHelper(new MessageHelper(getApplicationContext()));
         helper.addHelper(new ScheduleHelper(getApplicationContext()));
 
+        //service init
+        if(!isServiceRunning(MainService.class)) {
+            startService(new Intent(this, MainService.class));
+        }
+
         overviewPopulator = new OverviewPopulator(this);
         schedulePopulator = new SchedulePopulator(this);
 
@@ -77,6 +83,16 @@ public class MainActivity extends ActionBarActivity
         mDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+    }
+
+    private boolean isServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
