@@ -105,6 +105,12 @@ public abstract class AbstractHelper {
         return output;
     }
 
+    public boolean delete(String id){
+        List<SearchEntry> keys =  new ArrayList<SearchEntry>();
+        keys.add(new SearchEntry(SearchEntry.Type.STRING, "_id", SearchEntry.Search.EQUAL, id));
+        return delete(keys);
+    }
+
     public boolean delete(List<SearchEntry> keys){
         SQLiteDatabase database = this.databaseHelper.getWritableDatabase();
         String whereClause = "";
@@ -178,7 +184,7 @@ public abstract class AbstractHelper {
             if(searchEntry.getValue() instanceof List){
                 whereArgs.addAll((List)searchEntry.getValue());
             }else {
-                whereArgs.add(searchEntry.getValue().toString());
+                whereArgs.add(String.valueOf(searchEntry.getValue()));
             }
         }
         String sql = "SELECT * FROM " + this.tableName + " WHERE " + whereClause;

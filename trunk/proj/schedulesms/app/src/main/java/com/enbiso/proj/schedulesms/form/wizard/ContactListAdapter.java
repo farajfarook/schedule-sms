@@ -39,7 +39,7 @@ public class ContactListAdapter extends ArrayAdapter<ContactItem> {
         ((ImageButton)convertView.findViewById(R.id.contact_add)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                wizardDialog.addReceiver(contactItem);
+                wizardDialog.getSchedule().addReceiver(contactItem);
                 wizardDialog.updateReceiverList();
             }
         });

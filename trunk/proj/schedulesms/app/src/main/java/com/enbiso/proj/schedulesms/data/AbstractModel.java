@@ -3,6 +3,9 @@ package com.enbiso.proj.schedulesms.data;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +18,7 @@ public class AbstractModel {
     protected String _state;
     protected String _created;
     protected String _version;
+    protected DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     public String get_id() {
         return _id;
@@ -57,11 +61,20 @@ public class AbstractModel {
         return contentValues;
     }
 
+
     public void populateWith(Map<String, Object> data){
         this._id = fetchData(data, "_id");
         this._state = fetchData(data, "_state");
         this._created = fetchData(data, "_created");
         this._version = fetchData(data, "_version");
+    }
+
+    public String fetchData(Map<String, Object> data, String name, String def){
+        String value = fetchData(data, name);
+        if(value == null){
+            value = def;
+        }
+        return value;
     }
 
     public String fetchData(Map<String, Object> data, String name){
@@ -92,6 +105,21 @@ public class AbstractModel {
         }else{
             try{
                 return Double.parseDouble(value);
+            }catch (Exception e){
+                return null;
+            }
+        }
+    }
+
+    public Calendar fetchDataCalender(Map<String, Object> data, String name){
+        String value = fetchData(data, name);
+        if(value == null){
+            return null;
+        }else{
+            try{
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(dateTimeFormat.parse(value));
+                return calendar;
             }catch (Exception e){
                 return null;
             }
