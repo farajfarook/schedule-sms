@@ -44,21 +44,47 @@ public class ScheduleListAdapter extends ArrayAdapter<Schedule> {
         ((TextView)convertView.findViewById(R.id.schedule_item_message)).setText(schedules.get(position).getMessage(25));
         ((TextView)convertView.findViewById(R.id.schedule_item_number)).setText(schedules.get(position).getReceiverString(25));
         if(schedules.get(position).getRepeatEnable().equals(String.valueOf(false))) {
-            ((ImageView) convertView.findViewById(R.id.schedule_item_icon)).setImageResource(R.drawable.schedule_single);
+            if(schedules.get(position).get_state().equalsIgnoreCase("active")) {
+                ((ImageView) convertView.findViewById(R.id.schedule_item_icon)).setImageResource(R.drawable.schedule_single);
+            }else{
+                ((ImageView) convertView.findViewById(R.id.schedule_item_icon)).setImageResource(R.drawable.schedule_single_inactive);
+            }
+        }else{
+            if(schedules.get(position).get_state().equalsIgnoreCase("active")) {
+                ((ImageView) convertView.findViewById(R.id.schedule_item_icon)).setImageResource(R.drawable.schedule_repeat);
+            }else{
+                ((ImageView) convertView.findViewById(R.id.schedule_item_icon)).setImageResource(R.drawable.schedule_repeat_inactive);
+            }
         }
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 AlertDialog.Builder alertOptions = new AlertDialog.Builder(context);
-                String[] options = {"Edit", "Delete", "Cancel"};
+                String[] options = {"Activate", "Edit", "Delete", "Cancel"};
+                if(schedules.get(position).get_state().equalsIgnoreCase("active")){
+                    options[0] = "Deactivate";
+                }
                 alertOptions.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1, options), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         switch (i) {
                             case 0:
-                                new NewWizardDialog(context, schedules.get(position)).show();
+                                if(schedules.get(position).get_state().equalsIgnoreCase("completed")){
+                                    Toast.makeText(context, "This Schedule is already Completed. Edit the schedule and activate it.", Toast.LENGTH_SHORT).show();
+                                }else if(schedules.get(position).get_state().equalsIgnoreCase("inactive")){
+                                    schedules.get(position).set_state("active");
+                                    scheduleHelper.createOrUpdate(schedules.get(position));
+                                    ((MainActivity) context).getSchedulePopulator().resetup();
+                                }else if(schedules.get(position).get_state().equalsIgnoreCase("active")){
+                                    schedules.get(position).set_state("inactive");
+                                    scheduleHelper.createOrUpdate(schedules.get(position));
+                                    ((MainActivity) context).getSchedulePopulator().resetup();
+                                }
                                 break;
                             case 1:
+                                new NewWizardDialog(context, schedules.get(position)).show();
+                                break;
+                            case 2:
                                 AlertDialog.Builder deleteConfirm = new AlertDialog.Builder(context);
                                 deleteConfirm.setTitle("Delete confirmation.");
                                 deleteConfirm.setMessage("Are you sure that you want to delete the schedule?");
@@ -79,7 +105,7 @@ public class ScheduleListAdapter extends ArrayAdapter<Schedule> {
                                 deleteConfirm.show();
                                 dialogInterface.dismiss();
                                 break;
-                            case 2:
+                            case 3:
                                 dialogInterface.dismiss();
                                 break;
                         }

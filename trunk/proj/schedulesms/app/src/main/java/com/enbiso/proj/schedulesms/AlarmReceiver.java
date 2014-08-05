@@ -1,15 +1,30 @@
 package com.enbiso.proj.schedulesms;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.telephony.SmsManager;
 import android.widget.Toast;
+
+import com.enbiso.proj.schedulesms.data.DatabaseHelper;
+import com.enbiso.proj.schedulesms.data.core.Message;
+import com.enbiso.proj.schedulesms.data.core.MessageHelper;
+import com.enbiso.proj.schedulesms.data.core.ScheduleHelper;
+
+import java.util.Calendar;
+import java.util.List;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -22,21 +37,42 @@ public class AlarmReceiver extends BroadcastReceiver {
         PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
         wl.acquire();
 
-        // Put here YOUR code.
-        Toast.makeText(context, "Alarm !!!!!!!!!! ", Toast.LENGTH_LONG).show(); // For example
-        showNotification("message sent to XXX-XXXX-XXXXX", context);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        MessageHelper messageHelper = DatabaseHelper.getInstance().getHelper(MessageHelper.class);
 
+        messageHelper.initMessages(Calendar.getInstance());
+        messageHelper.removeHistoryMessages();
+        List<Message> messages = messageHelper.getMessagesFromQueue();
+        for (int i = 0; i < messages.size(); i++) {
+            Message message = messages.get(i);
+            sendMessage(context, message);
+            messageHelper.markAsSent(message);
+            if(settings.getBoolean("notifications_enable", true)){
+                showNotification("Schedule SMS sent to " + message.getReceiverString(10), message.getMessage(20) , context);
+            }
+        }
         wl.release();
     }
 
-    private void showNotification(String text, Context context) {
+    private void sendMessage(Context context, Message message){
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(message.getReceiverString(), null, message.getMessage(), null, null);
+
+        Uri uri = Uri.parse("content://sms/sent/");
+        ContentValues values = new ContentValues();
+        values.put("address", message.getReceiverString());
+        values.put("body", message.getMessage());
+        context.getContentResolver().insert(uri, values);
+    }
+
+    private void showNotification(String title, String text, Context context) {
         //We get a reference to the NotificationManager
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle(context.getResources().getString(R.string.app_name))
+                        .setContentTitle(title)
                         .setContentText(text);
 
         Intent resultIntent = new Intent(context, MainActivity.class);
@@ -48,10 +84,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     public void setAlarm(Context context){
         if(!alarmSet) {
+            //setup alarm
             AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReceiver.class);
             PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
-            am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 10 * 1, pi); // Millisec * Second * Minute
+            am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 60 * 1, pi); // Millisec * Second * Minute
             alarmSet = true;
         }
     }

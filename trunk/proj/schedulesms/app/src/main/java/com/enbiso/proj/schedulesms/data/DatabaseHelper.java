@@ -27,7 +27,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void addHelper(AbstractHelper helper){
-        modelHelpers.add(helper);
+        if(getHelper(helper.getClass()) == null) {
+            modelHelpers.add(helper);
+        }
     }
 
     public <T> T getHelper(Class<T> type){

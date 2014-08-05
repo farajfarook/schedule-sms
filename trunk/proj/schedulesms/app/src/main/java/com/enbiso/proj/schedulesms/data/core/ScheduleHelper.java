@@ -24,6 +24,7 @@ public class ScheduleHelper extends AbstractHelper{
         this.columns.add("repeat_value TEXT");
         this.columns.add("description TEXT");
         this.columns.add("schedule_date TEXT");
+        this.columns.add("next_execute TEXT");
         this.columns.add("receivers TEXT");
         this.columns.add("message TEXT");
     }

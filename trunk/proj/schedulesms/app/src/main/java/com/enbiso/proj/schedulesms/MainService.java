@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.widget.Toast;
 
+import com.enbiso.proj.schedulesms.data.DatabaseHelper;
+import com.enbiso.proj.schedulesms.data.core.MessageHelper;
+import com.enbiso.proj.schedulesms.data.core.ScheduleHelper;
+
 import java.util.Calendar;
 
 public class MainService extends Service {
@@ -13,11 +17,15 @@ public class MainService extends Service {
 
     public MainService() {
         alarmReceiver = new AlarmReceiver();
+        //setup db
+        DatabaseHelper.init(this);
+        DatabaseHelper helper = DatabaseHelper.getInstance();
+        helper.addHelper(new MessageHelper(this));
+        helper.addHelper(new ScheduleHelper(this));
     }
 
     @Override
     public void onCreate() {
-        Toast.makeText(this, "Service created", Toast.LENGTH_SHORT).show();
         super.onCreate();
     }
 
