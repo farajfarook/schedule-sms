@@ -83,6 +83,8 @@ public class MainActivity extends ActionBarActivity
         mDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        loadPage(PAGE_OVERVIEW, true);
     }
 
     private boolean isServiceRunning(Class<?> serviceClass) {

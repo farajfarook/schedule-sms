@@ -21,6 +21,7 @@ public class Schedule extends AbstractModel{
     private String description;
     private String repeatEnable = String.valueOf(false);
     private Calendar scheduleDate = Calendar.getInstance();
+    private Calendar nextExecute = Calendar.getInstance();
     private Calendar repeatValidTillDate = Calendar.getInstance();
     private String repeatType;
     private String repeatValue = "1";
@@ -34,6 +35,7 @@ public class Schedule extends AbstractModel{
         contentValues.put("description", description);
         contentValues.put("repeat_enable", repeatEnable);
         contentValues.put("schedule_date", dateTimeFormat.format(scheduleDate.getTime()));
+        contentValues.put("next_execute", dateTimeFormat.format(nextExecute.getTime()));
         contentValues.put("repeat_valid_till_date", dateTimeFormat.format(repeatValidTillDate.getTime()));
         contentValues.put("repeat_type", repeatType);
         contentValues.put("repeat_value", repeatValue);
@@ -48,6 +50,7 @@ public class Schedule extends AbstractModel{
         description = fetchData(data, "description");
         repeatEnable = fetchData(data, "repeat_enable", String.valueOf(false));
         scheduleDate = fetchDataCalender(data, "schedule_date");
+        nextExecute = fetchDataCalender(data, "next_execute");
         repeatValidTillDate = fetchDataCalender(data, "repeat_valid_till_date");
         repeatType = fetchData(data, "repeat_type");
         repeatValue = fetchData(data, "repeat_value", "1");
@@ -186,4 +189,11 @@ public class Schedule extends AbstractModel{
         return receivers.remove(contactItem);
     }
 
+    public Calendar getNextExecute() {
+        return nextExecute;
+    }
+
+    public void setNextExecute(Calendar nextExecute) {
+        this.nextExecute = nextExecute;
+    }
 }

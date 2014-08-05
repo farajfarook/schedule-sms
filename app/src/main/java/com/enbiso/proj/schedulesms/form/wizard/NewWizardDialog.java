@@ -338,6 +338,8 @@ public class NewWizardDialog extends WizardDialog {
             setRightButton("Finish", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    schedule.setNextExecute(schedule.getScheduleDate());//set next execute as the schedule date
+                    schedule.set_state("active");
                     if (DatabaseHelper.getInstance().getHelper(ScheduleHelper.class).createOrUpdate(schedule)) {
                         Toast.makeText(context, "SMS Schedule saved.", Toast.LENGTH_SHORT).show();
                     } else {
