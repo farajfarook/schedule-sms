@@ -61,7 +61,10 @@ public class Schedule extends AbstractModel{
     private static String encodeReceiverList(List<ContactItem> receivers){
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < receivers.size(); i++) {
-            stringBuilder.append(receivers.get(i).getNumber()).append(";");
+            stringBuilder.append(receivers.get(i).getNumber());
+            if(i < receivers.size() - 1){
+                stringBuilder.append(";");
+            }
         }
         return stringBuilder.toString();
     }

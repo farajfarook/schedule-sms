@@ -52,7 +52,10 @@ public class Message extends AbstractModel {
         StringBuilder stringBuilder = new StringBuilder();
         if(receivers != null) {
             for (int i = 0; i < receivers.size(); i++) {
-                stringBuilder.append(receivers.get(i).getNumber()).append(";");
+                stringBuilder.append(receivers.get(i).getNumber());
+                if(i < receivers.size() - 1){
+                    stringBuilder.append(";");
+                }
             }
         }
         return stringBuilder.toString();

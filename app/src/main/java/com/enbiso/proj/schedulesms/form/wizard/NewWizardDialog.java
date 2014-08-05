@@ -2,6 +2,7 @@ package com.enbiso.proj.schedulesms.form.wizard;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +27,7 @@ import com.enbiso.proj.schedulesms.form.WizardDialog;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -64,8 +66,9 @@ public class NewWizardDialog extends WizardDialog {
         ((ListView) dialog.findViewById(R.id.new_wizard_receiver_list)).setAdapter(new ReceiverListAdapter(context, schedule.getReceivers(), this));
     }
 
-    public void updateContactList(String name){
-        ((ListView) dialog.findViewById(R.id.new_wizard_contact_list)).setAdapter(new ContactListAdapter(context, ContactItem.fetchContactItems(context, name), this));
+    public void updateContactList(final String name){
+        ContactListUpdateAsync updateAsync = new ContactListUpdateAsync(context, name, this);
+        updateAsync.execute();
     }
 
     public void updateTemplateList(){

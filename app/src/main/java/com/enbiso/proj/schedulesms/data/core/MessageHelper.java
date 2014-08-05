@@ -52,18 +52,20 @@ public class MessageHelper extends AbstractHelper{
                     Calendar nextExecute = schedule.getNextExecute();
                     if(nextExecute.getTimeInMillis() <= calendar.getTimeInMillis()) {
                         createMessageFromSchedule(schedule);
-                        if (schedule.getRepeatType().equalsIgnoreCase("Minutes")) {
-                            nextExecute.add(Calendar.MINUTE, value);
-                        } else if (schedule.getRepeatType().equalsIgnoreCase("Hours")) {
-                            nextExecute.add(Calendar.HOUR, value);
-                        } else if (schedule.getRepeatType().equalsIgnoreCase("Days")) {
-                            nextExecute.add(Calendar.DATE, value);
-                        } else if (schedule.getRepeatType().equalsIgnoreCase("Weeks")) {
-                            nextExecute.add(Calendar.DATE, value * 7);
-                        } else if (schedule.getRepeatType().equalsIgnoreCase("Months")) {
-                            nextExecute.add(Calendar.MONTH, value);
-                        } else if (schedule.getRepeatType().equalsIgnoreCase("Years")) {
-                            nextExecute.add(Calendar.YEAR, value);
+                        while(nextExecute.getTimeInMillis() <= calendar.getTimeInMillis()) {
+                            if (schedule.getRepeatType().equalsIgnoreCase("Minutes")) {
+                                nextExecute.add(Calendar.MINUTE, value);
+                            } else if (schedule.getRepeatType().equalsIgnoreCase("Hours")) {
+                                nextExecute.add(Calendar.HOUR, value);
+                            } else if (schedule.getRepeatType().equalsIgnoreCase("Days")) {
+                                nextExecute.add(Calendar.DATE, value);
+                            } else if (schedule.getRepeatType().equalsIgnoreCase("Weeks")) {
+                                nextExecute.add(Calendar.DATE, value * 7);
+                            } else if (schedule.getRepeatType().equalsIgnoreCase("Months")) {
+                                nextExecute.add(Calendar.MONTH, value);
+                            } else if (schedule.getRepeatType().equalsIgnoreCase("Years")) {
+                                nextExecute.add(Calendar.YEAR, value);
+                            }
                         }
                         if (nextExecute.getTimeInMillis() > schedule.getRepeatValidTillDate().getTimeInMillis()) {
                             schedule.set_state("completed");

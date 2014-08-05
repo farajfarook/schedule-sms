@@ -10,22 +10,9 @@ import com.enbiso.proj.schedulesms.data.core.ScheduleHelper;
 
 public class AutoStart extends BroadcastReceiver {
 
-    private AlarmReceiver alarmReceiver;
-
-    public AutoStart() {
-        alarmReceiver = new AlarmReceiver();
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            //setup db
-            DatabaseHelper.init(context);
-            DatabaseHelper helper = DatabaseHelper.getInstance();
-            helper.addHelper(new MessageHelper(context));
-            helper.addHelper(new ScheduleHelper(context));
-
-            alarmReceiver.setAlarm(context);
-        }
+        Intent myIntent = new Intent(context, MainService.class);
+        context.startService(myIntent);
     }
 }
