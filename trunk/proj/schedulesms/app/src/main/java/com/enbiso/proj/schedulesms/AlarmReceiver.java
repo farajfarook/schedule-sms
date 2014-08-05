@@ -56,7 +56,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private void sendMessage(Context context, Message message){
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(message.getReceiverString(), null, message.getMessage(), null, null);
+      //  sms.sendTextMessage(message.getReceiverString(), null, message.getMessage(), null, null);
 
         Uri uri = Uri.parse("content://sms/sent/");
         ContentValues values = new ContentValues();
