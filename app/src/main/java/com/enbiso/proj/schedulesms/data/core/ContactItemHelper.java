@@ -5,10 +5,12 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.enbiso.proj.schedulesms.MainActivity;
@@ -16,6 +18,7 @@ import com.enbiso.proj.schedulesms.R;
 import com.enbiso.proj.schedulesms.data.AbstractHelper;
 import com.enbiso.proj.schedulesms.data.AbstractModel;
 import com.enbiso.proj.schedulesms.data.DatabaseHelper;
+import com.enbiso.proj.schedulesms.data.SearchEntry;
 import com.enbiso.proj.schedulesms.form.wizard.ContactListAdapter;
 import com.enbiso.proj.schedulesms.form.wizard.NewWizardDialog;
 
@@ -51,6 +54,40 @@ public class ContactItemHelper extends AbstractHelper{
             contactListUpdateAsync.execute();
             updated = true;
         }
+    }
+
+    @Override
+    public List<AbstractModel> find(List<SearchEntry> keys) {
+        SQLiteDatabase database = this.databaseHelper.getReadableDatabase();
+        String whereClause = "";
+        List<String> whereArgs = new ArrayList<String>();
+        for (int i = 0; i < keys.size(); i++) {
+            SearchEntry searchEntry = keys.get(i);
+            if(i > 0){
+                whereClause += " AND ";
+            }else if(i == 0 ){
+                whereClause += " WHERE ";
+            }
+            whereClause += searchEntry.toString();
+            if(searchEntry.getValue() instanceof List){
+                whereArgs.addAll((List)searchEntry.getValue());
+            }else {
+                whereArgs.add(searchEntry.getValue().toString());
+            }
+        }
+        String sql = "SELECT * FROM " + this.tableName + whereClause + " ORDER BY name ASC";
+        Log.i("DB", sql);
+        Cursor cursor = database.rawQuery(sql, whereArgs.toArray(new String[whereArgs.size()]));
+
+        List<AbstractModel> models = new ArrayList<AbstractModel>();
+        if(cursor.moveToFirst()){
+            do {
+                AbstractModel model = getModelInstance();
+                model.populateWith(cursor, this.columns);
+                models.add(model);
+            } while (cursor.moveToNext());
+        }
+        return models;
     }
 
     public class ContactListUpdateAsync extends AsyncTask<Integer, ContactItem, Integer> {
