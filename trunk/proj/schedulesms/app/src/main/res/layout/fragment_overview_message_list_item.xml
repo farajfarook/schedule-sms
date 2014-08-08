@@ -7,42 +7,89 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="10dp">
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:id="@+id/message_item_icon"
-            android:src="@drawable/message_idle"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp" />
+        android:layout_height="fill_parent">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:id="@+id/linearLayout2">
+            android:id="@+id/linearLayout2"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/message_item_photo"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/contact"
+                android:background="@android:color/transparent" />
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
+                android:layout_height="wrap_content" >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(XXXX) - XXX XXX XXXX..."
-                    android:id="@+id/message_item_number"
-                    android:textStyle="bold" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Message content content content.."
-                    android:id="@+id/message_item_message" />
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="(XXXX) - XXX XXX XXXX..."
+                            android:id="@+id/message_item_number"
+                            android:textStyle="bold"
+                            android:layout_marginRight="50dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SENDING"
+                            android:id="@+id/message_item_state"
+                            android:textSize="9dp"
+                            android:textStyle="bold"
+                            android:phoneNumber="false"
+                            android:textColor="#a3767676"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="5dp" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="30dp"
+                        android:text="Message content content content.."
+                        android:id="@+id/message_item_message"
+                        android:layout_marginRight="50dp"
+                        android:textSize="12dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/message_item_icon"
+                        android:src="@drawable/message_send"
+                        android:layout_marginLeft="-25dp"
+                        android:layout_alignParentBottom="true" />
+                </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 

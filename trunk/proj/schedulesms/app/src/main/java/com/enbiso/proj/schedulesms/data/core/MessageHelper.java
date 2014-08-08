@@ -26,6 +26,8 @@ public class MessageHelper extends AbstractHelper{
         this.columns.add("executed TEXT");
         this.columns.add("receivers TEXT");
         this.columns.add("message TEXT");
+        this.columns.add("error TEXT");
+        this.columns.add("delivered TEXT");
     }
 
     @Override
@@ -85,11 +87,11 @@ public class MessageHelper extends AbstractHelper{
     }
 
     public void removeHistoryMessages(){
-        List<Message> messages = (List<Message>)(List<?>)findBy("_state", "sent");
+        List<Message> messages = (List<Message>)(List<?>)findBy("_state", "delivered");
 
         final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         Calendar limitTime = Calendar.getInstance();
-        String val = settings.getString("history_till_list", "M-1");
+        String val = settings.getString("keep_history_till", "M-1");
         String[] valArray = val.split("-");
         int valInt = Integer.parseInt(valArray[1]);
         if(valArray[0].equalsIgnoreCase("D")){
@@ -122,12 +124,22 @@ public class MessageHelper extends AbstractHelper{
 
     public void markAsSent(Message message){
         message.set_state("sent");
-        message.setExecuted(Calendar.getInstance());
         this.createOrUpdate(message);
     }
 
-    public void markAsFailed(Message message){
+    public void markAsFailed(Message message, String error){
         message.set_state("failed");
+        message.setError(error);
+        this.createOrUpdate(message);
+    }
+
+    public void markAsDelivered(Message message){
+        message.set_state("delivered");
+        this.createOrUpdate(message);
+    }
+
+    public void markAsSending(Message message){
+        message.set_state("sending");
         message.setExecuted(Calendar.getInstance());
         this.createOrUpdate(message);
     }

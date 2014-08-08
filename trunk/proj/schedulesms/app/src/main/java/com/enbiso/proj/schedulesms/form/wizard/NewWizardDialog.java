@@ -2,7 +2,8 @@ package com.enbiso.proj.schedulesms.form.wizard;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.os.AsyncTask;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,12 +21,16 @@ import android.widget.Toast;
 import com.enbiso.proj.schedulesms.MainActivity;
 import com.enbiso.proj.schedulesms.R;
 import com.enbiso.proj.schedulesms.data.DatabaseHelper;
+import com.enbiso.proj.schedulesms.data.SearchEntry;
+import com.enbiso.proj.schedulesms.data.core.ContactItem;
+import com.enbiso.proj.schedulesms.data.core.ContactItemHelper;
 import com.enbiso.proj.schedulesms.data.core.Schedule;
 import com.enbiso.proj.schedulesms.data.core.ScheduleHelper;
 import com.enbiso.proj.schedulesms.form.WizardDialog;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -66,9 +71,16 @@ public class NewWizardDialog extends WizardDialog {
         ((ListView) dialog.findViewById(R.id.new_wizard_receiver_list)).setAdapter(new ReceiverListAdapter(context, schedule.getReceivers(), this));
     }
 
-    public void updateContactList(final String name){
-        ContactListUpdateAsync updateAsync = new ContactListUpdateAsync(context, name, this);
-        updateAsync.execute();
+    public void updateContactList(String name){
+        ContactItemHelper contactItemHelper = DatabaseHelper.getInstance().getHelper(ContactItemHelper.class);
+        List<SearchEntry> keys = new ArrayList<SearchEntry>();
+        if(name != null){
+            name = "%" + name + "%";
+        }else{
+            name = "%";
+        }
+        keys.add(new SearchEntry(SearchEntry.Type.STRING, "name", SearchEntry.Search.LIKE, name));
+        ((ListView) dialog.findViewById(R.id.new_wizard_contact_list)).setAdapter(new ContactListAdapter(context, (List<ContactItem>)(List<?>)contactItemHelper.find(keys), this));
     }
 
     public void updateTemplateList(){
@@ -114,16 +126,26 @@ public class NewWizardDialog extends WizardDialog {
             });
             updateContactList(null);
             updateReceiverList();
-            ((EditText)dialog.findViewById(R.id.new_wizard_phone)).setOnKeyListener(new View.OnKeyListener() {
+            ((EditText)dialog.findViewById(R.id.new_wizard_phone)).addTextChangedListener(new TextWatcher() {
                 @Override
-                public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
                     String phone = ((EditText) dialog.findViewById(R.id.new_wizard_phone)).getText().toString();
                     if (!phone.equals("")) {
                         updateContactList(phone);
                     }
-                    return false;
                 }
             });
+
             ((ImageButton)dialog.findViewById(R.id.new_wizard_phone_add)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

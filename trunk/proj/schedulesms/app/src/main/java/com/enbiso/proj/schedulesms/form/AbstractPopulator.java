@@ -38,9 +38,9 @@ public abstract class AbstractPopulator {
 
     protected AlertDialog.Builder getDialogBuilder(int resource){
         LayoutInflater inflater = ((MainActivity)context).getLayoutInflater();
-        View dialoglayout = inflater.inflate(resource, null);
+        View dialogLayout = inflater.inflate(resource, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setView(dialoglayout);
+                .setView(dialogLayout);
         return builder;
     }
 }

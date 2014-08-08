@@ -17,19 +17,19 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 import com.enbiso.proj.schedulesms.data.DatabaseHelper;
-import com.enbiso.proj.schedulesms.data.core.MessageHelper;
-import com.enbiso.proj.schedulesms.data.core.ScheduleHelper;
-import com.enbiso.proj.schedulesms.form.overview.OverviewPopulator;
+import com.enbiso.proj.schedulesms.data.core.ContactItemHelper;
+import com.enbiso.proj.schedulesms.form.history.HistoryPopulator;
 import com.enbiso.proj.schedulesms.form.schedule.SchedulePopulator;
 import com.enbiso.proj.schedulesms.form.wizard.NewWizardDialog;
 import com.enbiso.proj.schedulesms.navigation.DrawerFragment;
+import com.enbiso.proj.schedulesms.scheduler.SchedulerService;
 
 
 public class MainActivity extends ActionBarActivity
         implements DrawerFragment.NavigationDrawerCallbacks {
 
-    public static final int PAGE_OVERVIEW = 1;
-    public static final int PAGE_SCHEDULE = 2;
+    public static final int PAGE_SCHEDULE = 1;
+    public static final int PAGE_HISTORY = 2;
     public static final int PAGE_SETTING = 3;
 
     public static final int SETTING_RESULT = 2;
@@ -46,11 +46,11 @@ public class MainActivity extends ActionBarActivity
     private Integer menuResource;
 
     //populaters
-    private OverviewPopulator overviewPopulator;
+    private HistoryPopulator historyPopulator;
     private SchedulePopulator schedulePopulator;
 
-    public OverviewPopulator getOverviewPopulator() {
-        return overviewPopulator;
+    public HistoryPopulator getHistoryPopulator() {
+        return historyPopulator;
     }
     public SchedulePopulator getSchedulePopulator() {
         return schedulePopulator;
@@ -63,16 +63,13 @@ public class MainActivity extends ActionBarActivity
 
         //Initialize database helper
         DatabaseHelper.init(getApplicationContext());
-        DatabaseHelper helper = DatabaseHelper.getInstance();
-        helper.addHelper(new MessageHelper(getApplicationContext()));
-        helper.addHelper(new ScheduleHelper(getApplicationContext()));
 
         //service init
-        if(!isServiceRunning(MainService.class)) {
-            startService(new Intent(this, MainService.class));
+        if(!isServiceRunning(SchedulerService.class)) {
+            startService(new Intent(this, SchedulerService.class));
         }
 
-        overviewPopulator = new OverviewPopulator(this);
+        historyPopulator = new HistoryPopulator(this);
         schedulePopulator = new SchedulePopulator(this);
 
         mDrawerFragment = (DrawerFragment)
@@ -84,7 +81,24 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        loadPage(PAGE_OVERVIEW, true);
+        loadPage(PAGE_SCHEDULE, true);
+
+        DatabaseHelper.getInstance().getHelper(ContactItemHelper.class).fetchAndUpdate();
+
+        String messageId = getIntent().getStringExtra("message_id");
+        if(messageId != null){
+            //@todo open message
+            loadPage(PAGE_HISTORY, true);
+        }
+    }
+
+    int currentPage = -1;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(currentPage == -1){
+            loadPage(PAGE_SCHEDULE, true);
+        }
     }
 
     private boolean isServiceRunning(Class<?> serviceClass) {
@@ -103,6 +117,7 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void loadPage(int pageId, boolean manual){
+        currentPage = pageId;
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -116,15 +131,15 @@ public class MainActivity extends ActionBarActivity
 
     public void onSectionAttached(int number) {
         switch (number) {
-            case PAGE_OVERVIEW:
-                mTitle = getString(R.string.title_section_overview);
-                mIcon = R.drawable.drawer_overview;
-                menuResource = R.menu.menu_overview;
-                break;
             case PAGE_SCHEDULE:
-                mTitle = getString(R.string.title_section_repeat);
+                mTitle = getString(R.string.title_section_schedule_title);
                 mIcon = R.drawable.drawer_schedule;
                 menuResource = R.menu.menu_schedule;
+                break;
+            case PAGE_HISTORY:
+                mTitle = getString(R.string.title_section_history);
+                mIcon = R.drawable.drawer_history;
+                menuResource = R.menu.menu_history;
                 break;
         }
     }
@@ -160,7 +175,10 @@ public class MainActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()){
             case R.id.action_schedule_new:
-                new NewWizardDialog(this).show();
+                schedulePopulator.setupNew();
+                break;
+            case R.id.action_clear_history:
+                historyPopulator.setupClearHistory();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -207,9 +225,9 @@ public class MainActivity extends ActionBarActivity
                 Bundle savedInstanceState) {
             View rootView = null;
             switch (getArguments().getInt(ARG_SECTION_NUMBER)){
-                case PAGE_OVERVIEW:
+                case PAGE_HISTORY:
                     rootView = inflater.inflate(R.layout.fragment_overview, container, false);
-                    ((MainActivity)context).getOverviewPopulator().setup(rootView);
+                    ((MainActivity)context).getHistoryPopulator().setup(rootView);
                     break;
                 case PAGE_SCHEDULE:
                     rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
@@ -217,6 +235,7 @@ public class MainActivity extends ActionBarActivity
                     break;
                 case PAGE_SETTING:
                     ((MainActivity)context).startSettingsActivity();
+                    ((MainActivity)context).currentPage = -1;
                     break;
             }
             return rootView;

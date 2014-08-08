@@ -33,6 +33,6 @@
         android:layout_gravity="center"
         android:layout_marginLeft="-42dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/template_check" />
+        android:src="@drawable/template_check_selector" />
 
 </LinearLayout>

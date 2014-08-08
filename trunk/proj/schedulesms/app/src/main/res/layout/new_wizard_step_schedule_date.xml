@@ -4,26 +4,28 @@
 android:orientation="vertical" android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:weightSum="1"
-android:padding="15dp">
+    android:paddingTop="1dp"
+    android:background="@color/app_background">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingTop="1dp"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/darker_gray"
+        android:background="@color/subtopic_line"
         android:id="@+id/linearLayout" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Scheduling date"
+        android:text="Message Schedule Date"
         android:id="@+id/textView"
-        android:textColor="@android:color/white"
-        android:background="@android:color/darker_gray"
+        android:background="@color/subtopic_back"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:paddingRight="10dp"
+        android:textStyle="bold"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp" />
 
     <DatePicker
         android:layout_width="fill_parent"

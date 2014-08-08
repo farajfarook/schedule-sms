@@ -18,6 +18,8 @@ import com.enbiso.proj.schedulesms.data.core.Schedule;
 import com.enbiso.proj.schedulesms.data.core.ScheduleHelper;
 import com.enbiso.proj.schedulesms.form.wizard.NewWizardDialog;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -41,20 +43,34 @@ public class ScheduleListAdapter extends ArrayAdapter<Schedule> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         convertView = initView(convertView);
-        ((TextView)convertView.findViewById(R.id.schedule_item_message)).setText(schedules.get(position).getMessage(25));
-        ((TextView)convertView.findViewById(R.id.schedule_item_number)).setText(schedules.get(position).getReceiverString(25));
+
+        DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        ((TextView) convertView.findViewById(R.id.schedule_item_message)).setText(schedules.get(position).getMessage(65));
+        ((TextView)convertView.findViewById(R.id.schedule_item_number)).setText(schedules.get(position).getReceiverNameString(25));
+        String scheduleInfo = "";
         if(schedules.get(position).getRepeatEnable().equals(String.valueOf(false))) {
             if(schedules.get(position).get_state().equalsIgnoreCase("active")) {
                 ((ImageView) convertView.findViewById(R.id.schedule_item_icon)).setImageResource(R.drawable.schedule_single);
             }else{
                 ((ImageView) convertView.findViewById(R.id.schedule_item_icon)).setImageResource(R.drawable.schedule_single_inactive);
             }
+            scheduleInfo = "One time execute at " + dateTimeFormat.format(schedules.get(position).getScheduleDate().getTime());
         }else{
             if(schedules.get(position).get_state().equalsIgnoreCase("active")) {
                 ((ImageView) convertView.findViewById(R.id.schedule_item_icon)).setImageResource(R.drawable.schedule_repeat);
             }else{
                 ((ImageView) convertView.findViewById(R.id.schedule_item_icon)).setImageResource(R.drawable.schedule_repeat_inactive);
             }
+            scheduleInfo = "Each " + schedules.get(position).getRepeatValue() + " " +  schedules.get(position).getRepeatType() + "\n";
+            scheduleInfo += dateTimeFormat.format(schedules.get(position).getScheduleDate().getTime()) + " - " + dateFormat.format(schedules.get(position).getRepeatValidTillDate().getTime());
+        }
+        ((TextView)convertView.findViewById(R.id.schedule_item_schedule_info)).setText(scheduleInfo);
+        if(schedules.get(position).get_state().equalsIgnoreCase("active")) {
+            ((TextView)convertView.findViewById(R.id.schedule_item_schedule_info)).setTextColor(0xffe9594a);
+        }else{
+            ((TextView)convertView.findViewById(R.id.schedule_item_schedule_info)).setTextColor(context.getResources().getColor(android.R.color.darker_gray));
         }
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

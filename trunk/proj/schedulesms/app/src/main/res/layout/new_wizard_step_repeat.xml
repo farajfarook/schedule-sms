@@ -5,26 +5,28 @@
     android:orientation="vertical" android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:weightSum="1"
-android:padding="15dp">
+    android:paddingTop="1dp"
+    android:background="@color/app_background">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingTop="1dp"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/darker_gray"
-        android:id="@+id/linearLayout" />
+        android:background="@color/subtopic_line"
+        android:id="@+id/linearLayout4" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Repeat Schedule"
-        android:id="@+id/textView"
-        android:textColor="@android:color/white"
-        android:background="@android:color/darker_gray"
+        android:id="@+id/textView2"
+        android:background="@color/subtopic_back"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:paddingRight="10dp"
+        android:textStyle="bold"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -38,33 +40,33 @@ android:padding="15dp">
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_margin="10dp"
-        android:id="@+id/new_wizard_repeat_settings">
+        android:id="@+id/new_wizard_repeat_settings"
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingTop="1dp"
-            android:layout_marginTop="10dp"
-            android:background="@android:color/darker_gray"
-            android:id="@+id/linearLayout2"
-            android:layout_gravity="center_horizontal" />
+            android:background="@color/subtopic_line"
+            android:id="@+id/linearLayout" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Repeat after each"
-            android:id="@+id/textView3"
-            android:textColor="@android:color/white"
-            android:background="@android:color/darker_gray"
+            android:id="@+id/textView"
+            android:background="@color/subtopic_back"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" />
+            android:paddingRight="10dp"
+            android:textStyle="bold"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp" />
 
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="phone"
             android:ems="10"
             android:id="@+id/new_wizard_repeat_value"
             android:padding="10dp"
@@ -83,22 +85,23 @@ android:padding="15dp">
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingTop="1dp"
-            android:layout_marginTop="10dp"
-            android:background="@android:color/darker_gray"
-            android:id="@+id/linearLayout3" />
+            android:background="@color/subtopic_line"
+            android:id="@+id/linearLayout2" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Valid till"
-            android:id="@+id/textView4"
-            android:textColor="@android:color/white"
-            android:background="@android:color/darker_gray"
+            android:id="@+id/textView3"
+            android:background="@color/subtopic_back"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" />
+            android:paddingRight="10dp"
+            android:textStyle="bold"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp" />
 
         <LinearLayout
             android:orientation="horizontal"
