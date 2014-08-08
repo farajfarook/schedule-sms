@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -23,6 +25,9 @@ import com.enbiso.proj.schedulesms.form.schedule.SchedulePopulator;
 import com.enbiso.proj.schedulesms.form.wizard.NewWizardDialog;
 import com.enbiso.proj.schedulesms.navigation.DrawerFragment;
 import com.enbiso.proj.schedulesms.scheduler.SchedulerService;
+//import com.github.amlcurran.showcaseview.ShowcaseView;
+//import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
+//import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 
 public class MainActivity extends ActionBarActivity
@@ -56,6 +61,10 @@ public class MainActivity extends ActionBarActivity
         return schedulePopulator;
     }
 
+    public DrawerFragment getmDrawerFragment() {
+        return mDrawerFragment;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,14 +90,14 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        loadPage(PAGE_SCHEDULE, true);
-
         DatabaseHelper.getInstance().getHelper(ContactItemHelper.class).fetchAndUpdate();
 
         String messageId = getIntent().getStringExtra("message_id");
         if(messageId != null){
             //@todo open message
             loadPage(PAGE_HISTORY, true);
+        }else{
+            loadPage(PAGE_SCHEDULE, true);
         }
     }
 
@@ -155,16 +164,41 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mDrawerFragment.isDrawerOpen()) {
+        //if (!mDrawerFragment.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             if(menuResource != null) {
                 getMenuInflater().inflate(menuResource, menu);
+           /*     SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+                switch (menuResource){
+                    case R.menu.menu_history:
+                        if(!settings.getBoolean("help_menu_history", false)) {
+                            new ShowcaseView.Builder(this)
+                                    .setTarget(new ActionItemTarget(this, R.id.action_clear_history))
+                                    .setContentTitle("Clear message history")
+                                    .setContentText("You can clear the message history archive instantly by clicking this Button")
+                                    .hideOnTouchOutside()
+                                    .build();
+                            settings.edit().putBoolean("help_menu_history", true).commit();
+                        }
+                        break;
+                    case R.menu.menu_schedule:
+                        if(!settings.getBoolean("help_menu_schedule", false)) {
+                            new ShowcaseView.Builder(this)
+                                    .setTarget(new ActionItemTarget(this, R.id.action_schedule_new))
+                                    .setContentTitle("Create new Schedule")
+                                    .setContentText("You can create a new SMS Schedule by a wizard by clicking this Button.")
+                                    .hideOnTouchOutside()
+                                    .build();
+                            settings.edit().putBoolean("help_menu_schedule", true).commit();
+                        }
+                        break;
+                }*/
             }
             restoreActionBar();
-            return true;
-        }
+          //  return true;
+        //}
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -38,12 +38,6 @@ public class TemplateListAdapter extends ArrayAdapter<TemplateItem> {
         final TemplateItem templateItem = templateItems.get(position);
         ((TextView)convertView.findViewById(R.id.template_name)).setText(templateItem.getName());
         ((TextView)convertView.findViewById(R.id.template_content)).setText(templateItem.getContent().substring(0,30) + "...");
-        ((ImageButton)convertView.findViewById(R.id.template_select)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((EditText) wizardDialog.findViewById(R.id.new_wizard_message)).setText(templateItem.getContent());
-            }
-        });
         return convertView;
     }
 

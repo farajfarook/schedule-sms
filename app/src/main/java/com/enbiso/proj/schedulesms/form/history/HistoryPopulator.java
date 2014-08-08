@@ -3,6 +3,9 @@ package com.enbiso.proj.schedulesms.form.history;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -15,6 +18,8 @@ import com.enbiso.proj.schedulesms.data.core.Message;
 import com.enbiso.proj.schedulesms.data.core.MessageHelper;
 import com.enbiso.proj.schedulesms.form.AbstractPopulator;
 import com.enbiso.proj.schedulesms.form.wizard.NewWizardDialog;
+//import com.github.amlcurran.showcaseview.ShowcaseView;
+//import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.util.ArrayList;
 import java.util.Collections;

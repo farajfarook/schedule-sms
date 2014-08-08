@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:padding="1dp">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:paddingLeft="1dp"
+        android:background="@drawable/rounded"
+        android:paddingRight="5dp"
+        android:measureWithLargestChild="false"
+        android:longClickable="false"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(XXXX) - XXXX XXXXX"
+            android:id="@+id/tag_display"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="12dp"
+            android:textColor="@android:color/white"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID"
+            android:id="@+id/tag_id"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tag_remove"
+            android:src="@drawable/tag_cross_selector"
+            android:background="@android:color/transparent" />
+    </LinearLayout>
+</LinearLayout>

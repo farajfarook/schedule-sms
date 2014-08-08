@@ -5,10 +5,13 @@ import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.enbiso.proj.schedulesms.MainActivity;
 import com.enbiso.proj.schedulesms.R;
 import com.enbiso.proj.schedulesms.data.core.ContactItem;
 
@@ -45,13 +48,6 @@ public class ContactListAdapter extends ArrayAdapter<ContactItem> {
             ((ImageView)convertView.findViewById(R.id.contact_icon)).setImageResource(R.drawable.contact);
         }
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                wizardDialog.getSchedule().addReceiver(contactItem);
-                wizardDialog.updateReceiverList();
-            }
-        });
         return convertView;
     }
 

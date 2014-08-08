@@ -6,13 +6,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -68,7 +74,24 @@ public class NewWizardDialog extends WizardDialog {
     }
 
     public void updateReceiverList(){
-        ((ListView) dialog.findViewById(R.id.new_wizard_receiver_list)).setAdapter(new ReceiverListAdapter(context, schedule.getReceivers(), this));
+        //((ListView) dialog.findViewById(R.id.new_wizard_receiver_list)).setAdapter(new ReceiverListAdapter(context, schedule.getReceivers(), this));
+        LinearLayout parent = ((LinearLayout)dialog.findViewById(R.id.receiver_list));
+        parent.removeAllViews();
+        List<ContactItem> receivers = schedule.getReceivers();
+        for (int i = 0; i < receivers.size(); i++) {
+            final ContactItem receiver = receivers.get(i);
+            View tagView = ((MainActivity)context).getLayoutInflater().inflate(R.layout.receiver_tag, null);
+            ((TextView)tagView.findViewById(R.id.tag_display)).setText(receiver.getName(receiver.getPhone()));
+            ((TextView)tagView.findViewById(R.id.tag_id)).setText(receiver.get_id());
+            ((ImageButton)tagView.findViewById(R.id.tag_remove)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NewWizardDialog.this.getSchedule().removeReceiver(receiver);
+                    NewWizardDialog.this.updateReceiverList();
+                }
+            });
+            parent.addView(tagView);
+        }
     }
 
     public void updateContactList(String name){
@@ -81,10 +104,6 @@ public class NewWizardDialog extends WizardDialog {
         }
         keys.add(new SearchEntry(SearchEntry.Type.STRING, "name", SearchEntry.Search.LIKE, name));
         ((ListView) dialog.findViewById(R.id.new_wizard_contact_list)).setAdapter(new ContactListAdapter(context, (List<ContactItem>)(List<?>)contactItemHelper.find(keys), this));
-    }
-
-    public void updateTemplateList(){
-        ((ListView) dialog.findViewById(R.id.new_wizard_template_list)).setAdapter(new TemplateListAdapter(context, TemplateItem.fetchTemplateItems(context), this));
     }
 
     public void updateValidTill(){
@@ -112,7 +131,7 @@ public class NewWizardDialog extends WizardDialog {
                 @Override
                 public void onClick(View view) {
                     if(schedule.getReceivers().size() <= 0){
-                        Toast.makeText(context, "Atleast one receiver should be set.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "At least one receiver should be set.", Toast.LENGTH_SHORT).show();
                     }else {
                         nextStep();
                     }
@@ -126,6 +145,20 @@ public class NewWizardDialog extends WizardDialog {
             });
             updateContactList(null);
             updateReceiverList();
+
+            final ListView listView = (ListView)findViewById(R.id.new_wizard_contact_list);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    ContactItem contactItem = (ContactItem)listView.getItemAtPosition(position);
+                    EditText myEditText = (EditText) findViewById(R.id.new_wizard_phone);
+                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
+                    getSchedule().addReceiver(contactItem);
+                    updateReceiverList();
+                }
+            });
+
             ((EditText)dialog.findViewById(R.id.new_wizard_phone)).addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -159,6 +192,9 @@ public class NewWizardDialog extends WizardDialog {
                             ((EditText) dialog.findViewById(R.id.new_wizard_phone)).setText("");
                         }
                     }
+                    EditText myEditText = (EditText) findViewById(R.id.new_wizard_phone);
+                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
                 }
             });
         }
@@ -174,11 +210,23 @@ public class NewWizardDialog extends WizardDialog {
         @Override
         public void setup() {
             super.setup();
-            updateTemplateList();
+            final ListView templateList = ((ListView)(findViewById(R.id.new_wizard_template_list)));
+            templateList.setAdapter(new TemplateListAdapter(context, TemplateItem.fetchTemplateItems(context), NewWizardDialog.this));
+            templateList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    TemplateItem templateItem = (TemplateItem) templateList.getItemAtPosition(position);
+                    ((EditText) findViewById(R.id.new_wizard_message)).setText(templateItem.getContent());
+                }
+            });
             ((EditText)findViewById(R.id.new_wizard_message)).setText(schedule.getMessage());
             setRightButton("Next", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    EditText myEditText = (EditText) findViewById(R.id.new_wizard_message);
+                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
+
                     schedule.setMessage(((EditText) findViewById(R.id.new_wizard_message)).getText().toString());
                     nextStep();
                 }
@@ -186,6 +234,10 @@ public class NewWizardDialog extends WizardDialog {
             setLeftButton("Previous", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    EditText myEditText = (EditText) findViewById(R.id.new_wizard_message);
+                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
+
                     schedule.setMessage(((EditText) findViewById(R.id.new_wizard_message)).getText().toString());
                     previousStep();
                 }
@@ -325,6 +377,10 @@ public class NewWizardDialog extends WizardDialog {
             setRightButton("Next", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    EditText myEditText = (EditText) findViewById(R.id.new_wizard_repeat_value);
+                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
+
                     schedule.setRepeatValue(((EditText) dialog.findViewById(R.id.new_wizard_repeat_value)).getText().toString());
                     nextStep();
                 }
@@ -332,6 +388,10 @@ public class NewWizardDialog extends WizardDialog {
             setLeftButton("Previous", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    EditText myEditText = (EditText) findViewById(R.id.new_wizard_repeat_value);
+                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
+
                     schedule.setRepeatValue(((EditText) dialog.findViewById(R.id.new_wizard_repeat_value)).getText().toString());
                     previousStep();
                 }

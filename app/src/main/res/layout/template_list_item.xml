@@ -8,7 +8,6 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="42dp"
         android:padding="5dp">
 
         <TextView
@@ -25,14 +24,5 @@
             android:id="@+id/template_content" />
 
     </LinearLayout>
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/template_select"
-        android:layout_gravity="center"
-        android:layout_marginLeft="-42dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/template_check_selector" />
 
 </LinearLayout>
