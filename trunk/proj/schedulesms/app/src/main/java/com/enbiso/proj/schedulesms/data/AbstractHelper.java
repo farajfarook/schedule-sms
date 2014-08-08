@@ -194,8 +194,10 @@ public abstract class AbstractHelper {
         if(cursor.moveToFirst()){
             AbstractModel model = getModelInstance();
             model.populateWith(cursor, columns);
+            cursor.close();
             return model;
         }
+        cursor.close();
         return null;
     }
 

@@ -87,7 +87,9 @@ public class ContactItemHelper extends AbstractHelper{
         @Override
         protected void onProgressUpdate(ContactItem... values) {
             ContactItem contactItem = values[0];
-            createOrUpdate(contactItem);
+            if(getBy("_id", contactItem.get_id()) == null) {
+                create(contactItem);
+            }
         }
     }
 }
