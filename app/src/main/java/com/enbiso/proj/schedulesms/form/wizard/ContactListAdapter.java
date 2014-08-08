@@ -1,14 +1,16 @@
 package com.enbiso.proj.schedulesms.form.wizard;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.enbiso.proj.schedulesms.R;
+import com.enbiso.proj.schedulesms.data.core.ContactItem;
 
 import java.util.List;
 
@@ -34,9 +36,16 @@ public class ContactListAdapter extends ArrayAdapter<ContactItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = initView(convertView);
         final ContactItem contactItem = contactItems.get(position);
-        ((TextView)convertView.findViewById(R.id.contact_name)).setText(contactItem.getName());
-        ((TextView)convertView.findViewById(R.id.contact_number)).setText(contactItem.getNumber());
-        ((ImageButton)convertView.findViewById(R.id.contact_add)).setOnClickListener(new View.OnClickListener() {
+        ((TextView)convertView.findViewById(R.id.contact_name)).setText(contactItem.getName("unknown"));
+        ((TextView)convertView.findViewById(R.id.contact_number)).setText(contactItem.getPhone());
+
+        if(contactItem.getPhoto(context) != null){
+            ((ImageView)convertView.findViewById(R.id.contact_icon)).setImageURI(contactItem.getPhoto(context));
+        }else{
+            ((ImageView)convertView.findViewById(R.id.contact_icon)).setImageResource(R.drawable.contact);
+        }
+
+        convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 wizardDialog.getSchedule().addReceiver(contactItem);

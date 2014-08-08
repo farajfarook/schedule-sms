@@ -4,6 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.enbiso.proj.schedulesms.data.core.ContactItemHelper;
+import com.enbiso.proj.schedulesms.data.core.MessageHelper;
+import com.enbiso.proj.schedulesms.data.core.ScheduleHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,17 +23,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static void init(Context context){
         if(databaseHelper == null){
             databaseHelper = new DatabaseHelper(context);
+            databaseHelper.modelHelpers.add(new MessageHelper(context));
+            databaseHelper.modelHelpers.add(new ScheduleHelper(context));
+            databaseHelper.modelHelpers.add(new ContactItemHelper(context));
         }
     }
 
     public static DatabaseHelper getInstance(){
         return databaseHelper;
-    }
-
-    public void addHelper(AbstractHelper helper){
-        if(getHelper(helper.getClass()) == null) {
-            modelHelpers.add(helper);
-        }
     }
 
     public <T> T getHelper(Class<T> type){

@@ -9,7 +9,9 @@ import com.enbiso.proj.schedulesms.data.DatabaseHelper;
 import com.enbiso.proj.schedulesms.data.core.Schedule;
 import com.enbiso.proj.schedulesms.data.core.ScheduleHelper;
 import com.enbiso.proj.schedulesms.form.AbstractPopulator;
+import com.enbiso.proj.schedulesms.form.wizard.NewWizardDialog;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,6 +30,11 @@ public class SchedulePopulator extends AbstractPopulator {
     public void setup(View rootView) {
         super.setup(rootView);
         List<Schedule> schedules = (List<Schedule>)(List<?>)scheduleHelper.findAll();
+        Collections.reverse(schedules);
         ((ListView) rootView.findViewById(R.id.schedule_list)).setAdapter(new ScheduleListAdapter(context, schedules));
+    }
+
+    public void setupNew(){
+        new NewWizardDialog(context).show();
     }
 }

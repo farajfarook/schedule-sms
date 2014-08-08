@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="subtopic_line" type="color">#FF000000</item>
+    <item name="subtopic_back" type="color">#ffe9ebeb</item>
+    <item name="app_background" type="color">#ffffffff</item>
+</resources>

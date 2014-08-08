@@ -10,5 +10,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/schedule_list"
         android:choiceMode="singleChoice"
-        tools:listitem="@layout/fragment_schedule_list_item" />
+        tools:listitem="@layout/fragment_schedule_list_item"
+        android:background="@color/app_background" />
 </LinearLayout>

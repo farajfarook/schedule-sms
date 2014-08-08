@@ -6,9 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.enbiso.proj.schedulesms.R;
+import com.enbiso.proj.schedulesms.data.core.ContactItem;
 
 import java.util.List;
 
@@ -34,8 +36,13 @@ public class ReceiverListAdapter extends ArrayAdapter<ContactItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = initView(convertView);
         final ContactItem contactItem = contactItems.get(position);
-        ((TextView)convertView.findViewById(R.id.receiver_name)).setText(contactItem.getName());
-        ((TextView)convertView.findViewById(R.id.receiver_number)).setText(contactItem.getNumber());
+        ((TextView)convertView.findViewById(R.id.receiver_name)).setText(contactItem.getName("unknown"));
+        ((TextView)convertView.findViewById(R.id.receiver_number)).setText(contactItem.getPhone());
+        if(contactItem.getPhoto(context) != null){
+            ((ImageView)convertView.findViewById(R.id.receiver_photo)).setImageURI(contactItem.getPhoto(context));
+        }else{
+            ((ImageView)convertView.findViewById(R.id.receiver_photo)).setImageResource(R.drawable.contact);
+        }
         ((ImageButton)convertView.findViewById(R.id.receiver_remove)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

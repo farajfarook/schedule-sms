@@ -3,11 +3,8 @@ package com.enbiso.proj.schedulesms.data.core;
 import android.content.ContentValues;
 
 import com.enbiso.proj.schedulesms.data.AbstractModel;
-import com.enbiso.proj.schedulesms.form.wizard.ContactItem;
+import com.enbiso.proj.schedulesms.data.DatabaseHelper;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -61,7 +58,7 @@ public class Schedule extends AbstractModel{
     private static String encodeReceiverList(List<ContactItem> receivers){
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < receivers.size(); i++) {
-            stringBuilder.append(receivers.get(i).getNumber());
+            stringBuilder.append(receivers.get(i).getPhone());
             if(i < receivers.size() - 1){
                 stringBuilder.append(";");
             }
@@ -71,11 +68,44 @@ public class Schedule extends AbstractModel{
 
     private static List<ContactItem> decodeReceiverString(String receiverStr){
         List<ContactItem> receivers = new ArrayList<ContactItem>();
+        if(receiverStr == null){
+            receiverStr = "";
+        }
         List<String> numbers = Arrays.asList(receiverStr.split(";"));
         for (int i = 0; i < numbers.size(); i++) {
-            receivers.add(new ContactItem(numbers.get(i)));
+            ContactItem contactItem = (ContactItem) DatabaseHelper.getInstance().getHelper(ContactItemHelper.class).getBy("_id", numbers.get(i));
+            if(contactItem == null) {
+                contactItem = new ContactItem(numbers.get(i));
+            }
+            receivers.add(contactItem);
         }
         return receivers;
+    }
+
+    public String getReceiverNameString(int limit){
+        String receiverStr  = getReceiverNameString();
+        if(receiverStr.length() <= limit){
+            return  receiverStr;
+        }else {
+            return receiverStr.substring(0, limit) + "...";
+        }
+    }
+
+    public String getReceiverNameString(){
+        StringBuilder stringBuilder = new StringBuilder();
+        if(receivers != null) {
+            for (int i = 0; i < receivers.size(); i++) {
+                String value = receivers.get(i).getName();
+                if(value == null){
+                    value = receivers.get(i).getPhone();
+                }
+                stringBuilder.append(value);
+                if(i < receivers.size() - 1){
+                    stringBuilder.append(";");
+                }
+            }
+        }
+        return stringBuilder.toString();
     }
 
     public List<Message> getMessages() {

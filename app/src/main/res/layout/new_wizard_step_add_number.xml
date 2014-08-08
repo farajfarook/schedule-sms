@@ -4,12 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp">
+    android:padding="0dp"
+    android:background="@color/app_background">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
 
         <EditText
             android:layout_width="match_parent"
@@ -24,7 +27,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:id="@+id/new_wizard_phone_add"
-            android:src="@drawable/add_number"
+            android:src="@drawable/add_number_selector"
             android:layout_marginLeft="-43dp"
             android:background="@android:color/transparent" />
 
@@ -34,7 +37,6 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:id="@+id/new_wizard_contact_list"
-        android:layout_gravity="center_horizontal"
         android:layout_weight="0.5"
         tools:listitem="@layout/contact_list_item"
         android:layout_marginBottom="5dp" />
@@ -44,27 +46,29 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingTop="1dp"
-        android:background="@android:color/darker_gray">
+        android:background="@color/subtopic_line">
 
     </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Receivers"
         android:id="@+id/textView"
         android:layout_gravity="left"
-        android:background="@android:color/darker_gray"
+        android:background="@color/subtopic_back"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp" />
 
     <ListView
         tools:listitem="@layout/receiver_list_item"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:id="@+id/new_wizard_receiver_list"
-        android:layout_gravity="center_horizontal"
         android:layout_weight="0.5"
         android:layout_marginTop="5dp" />
 
