@@ -22,6 +22,7 @@ import com.enbiso.proj.schedulesms.form.wizard.NewWizardDialog;
 //import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 //import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,55 +50,59 @@ public class SchedulePopulator extends AbstractPopulator {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final Schedule schedule = (Schedule)listView.getItemAtPosition(i);
                 AlertDialog.Builder alertOptions = new AlertDialog.Builder(context);
-                String[] options = {"Activate", "Edit", "Delete", "Cancel"};
-                if(schedule.get_state().equalsIgnoreCase("active")){
-                    options[0] = "Deactivate";
+                List<String> optsList = new ArrayList<String>();
+
+                if(!schedule.get_state().equalsIgnoreCase("completed")) {
+                    if(schedule.get_state().equalsIgnoreCase("active")){
+                        optsList.add("Deactivate");
+                    }else if(schedule.get_state().equalsIgnoreCase("inactive")){
+                        optsList.add("Activate");
+                    }
+                    optsList.add("Edit");
                 }
+                optsList.add("Delete");
+                final String[] options = optsList.toArray(new String[]{});
                 alertOptions.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1, options), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        switch (i) {
-                            case 0:
-                                if(schedule.get_state().equalsIgnoreCase("completed")){
-                                    Toast.makeText(context, "This Schedule is already Completed. Edit the schedule and activate it.", Toast.LENGTH_SHORT).show();
-                                }else if(schedule.get_state().equalsIgnoreCase("inactive")){
-                                    schedule.set_state("active");
-                                    scheduleHelper.createOrUpdate(schedule);
-                                    ((MainActivity) context).getSchedulePopulator().resetup();
-                                }else if(schedule.get_state().equalsIgnoreCase("active")){
-                                    schedule.set_state("inactive");
-                                    scheduleHelper.createOrUpdate(schedule);
+                        if(options[i].equalsIgnoreCase("EDIT")){
+                            new NewWizardDialog(context, schedule).show();
+                        }else if(options[i].equalsIgnoreCase("DELETE")){
+                            AlertDialog.Builder deleteConfirm = new AlertDialog.Builder(context);
+                            deleteConfirm.setTitle("Delete confirmation.");
+                            deleteConfirm.setMessage("Are you sure that you want to delete the schedule?");
+                            deleteConfirm.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Toast.makeText(context, "Schedule deleted.", Toast.LENGTH_SHORT).show();
+                                    scheduleHelper.delete(schedule.get_id());
                                     ((MainActivity) context).getSchedulePopulator().resetup();
                                 }
-                                break;
-                            case 1:
-                                new NewWizardDialog(context, schedule).show();
-                                break;
-                            case 2:
-                                AlertDialog.Builder deleteConfirm = new AlertDialog.Builder(context);
-                                deleteConfirm.setTitle("Delete confirmation.");
-                                deleteConfirm.setMessage("Are you sure that you want to delete the schedule?");
-                                deleteConfirm.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        Toast.makeText(context, "Schedule deleted.", Toast.LENGTH_SHORT).show();
-                                        scheduleHelper.delete(schedule.get_id());
-                                        ((MainActivity) context).getSchedulePopulator().resetup();
-                                    }
-                                });
-                                deleteConfirm.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                });
-                                deleteConfirm.show();
-                                dialogInterface.dismiss();
-                                break;
-                            case 3:
-                                dialogInterface.dismiss();
-                                break;
+                            });
+                            deleteConfirm.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                            deleteConfirm.show();
+                            dialogInterface.dismiss();
+                        }else if(options[i].equalsIgnoreCase("ACTIVATE")){
+                            schedule.set_state("active");
+                            scheduleHelper.createOrUpdate(schedule);
+                            ((MainActivity) context).getSchedulePopulator().resetup();
+                        }else if(options[i].equalsIgnoreCase("DEACTIVATE")){
+                            schedule.set_state("inactive");
+                            scheduleHelper.createOrUpdate(schedule);
+                            ((MainActivity) context).getSchedulePopulator().resetup();
                         }
+                    }
+                });
+                alertOptions.setCancelable(true);
+                alertOptions.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                           dialogInterface.dismiss();
                     }
                 });
                 alertOptions.show();

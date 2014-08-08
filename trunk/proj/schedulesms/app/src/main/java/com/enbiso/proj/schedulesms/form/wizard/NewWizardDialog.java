@@ -38,6 +38,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -74,7 +75,6 @@ public class NewWizardDialog extends WizardDialog {
     }
 
     public void updateReceiverList(){
-        //((ListView) dialog.findViewById(R.id.new_wizard_receiver_list)).setAdapter(new ReceiverListAdapter(context, schedule.getReceivers(), this));
         LinearLayout parent = ((LinearLayout)dialog.findViewById(R.id.receiver_list));
         parent.removeAllViews();
         List<ContactItem> receivers = schedule.getReceivers();
@@ -103,7 +103,8 @@ public class NewWizardDialog extends WizardDialog {
             name = "%";
         }
         keys.add(new SearchEntry(SearchEntry.Type.STRING, "name", SearchEntry.Search.LIKE, name));
-        ((ListView) dialog.findViewById(R.id.new_wizard_contact_list)).setAdapter(new ContactListAdapter(context, (List<ContactItem>)(List<?>)contactItemHelper.find(keys), this));
+        List<ContactItem> contactItems = (List<ContactItem>)(List<?>)contactItemHelper.find(keys);
+        ((ListView) dialog.findViewById(R.id.new_wizard_contact_list)).setAdapter(new ContactListAdapter(context, contactItems, this));
     }
 
     public void updateValidTill(){
@@ -296,7 +297,14 @@ public class NewWizardDialog extends WizardDialog {
                 public void onClick(View view) {
                     schedule.getScheduleDate().set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
                     schedule.getScheduleDate().set(Calendar.MINUTE, timePicker.getCurrentMinute());
-                    nextStep();
+//                    if(schedule.getScheduleDate().getTimeInMillis() < Calendar.getInstance().getTimeInMillis()){
+//                        Toast.makeText(context, "Message scheduled to "
+//                                + dateTimeFormat.format(schedule.getScheduleDate().getTime())
+//                                + ". It should be greater than, "
+//                                + dateTimeFormat.format(Calendar.getInstance().getTime()), Toast.LENGTH_LONG).show();
+//                    }else {
+                        nextStep();
+//                    }
                 }
             });
             setLeftButton("Previous", new View.OnClickListener() {
@@ -334,6 +342,21 @@ public class NewWizardDialog extends WizardDialog {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     schedule.setRepeatType(((Spinner) dialog.findViewById(R.id.new_wizard_repeat_type)).getSelectedItem().toString().toUpperCase());
+                  /*  int value = Integer.parseInt(schedule.getRepeatValue()) * 5;
+                    if (schedule.getRepeatType().equalsIgnoreCase("Minutes")) {
+                        schedule.getRepeatValidTillDate().add(Calendar.MINUTE, value);
+                    } else if (schedule.getRepeatType().equalsIgnoreCase("Hours")) {
+                        schedule.getRepeatValidTillDate().add(Calendar.HOUR, value);
+                    } else if (schedule.getRepeatType().equalsIgnoreCase("Days")) {
+                        schedule.getRepeatValidTillDate().add(Calendar.DATE, value);
+                    } else if (schedule.getRepeatType().equalsIgnoreCase("Weeks")) {
+                        schedule.getRepeatValidTillDate().add(Calendar.DATE, value * 7);
+                    } else if (schedule.getRepeatType().equalsIgnoreCase("Months")) {
+                        schedule.getRepeatValidTillDate().add(Calendar.MONTH, value);
+                    } else if (schedule.getRepeatType().equalsIgnoreCase("Years")) {
+                        schedule.getRepeatValidTillDate().add(Calendar.YEAR, value);
+                    }
+                    setup();*/
                 }
 
                 @Override
@@ -409,15 +432,15 @@ public class NewWizardDialog extends WizardDialog {
         @Override
         public void setup() {
             super.setup();
-            ((TextView)findViewById(R.id.new_wizard_confirm_receiver)).setText(schedule.getReceiverString(50));
+            ((TextView)findViewById(R.id.new_wizard_confirm_receiver)).setText(schedule.getReceiverNameString(100));
             ((TextView)findViewById(R.id.new_wizard_confirm_message)).setText(schedule.getMessage());
             String repeatText = "";
             if(!Boolean.parseBoolean(schedule.getRepeatEnable())){
                 repeatText = "Single execution on " + dateTimeFormat.format(schedule.getScheduleDate().getTime());
             }else{
                 repeatText = "Repeat schedule for each '" + schedule.getRepeatValue() + "' " + schedule.getRepeatType()
-                         + "\n From : " + dateTimeFormat.format(schedule.getScheduleDate().getTime())
-                         + "\n Until : " + dateTimeFormat.format(schedule.getRepeatValidTillDate().getTime());
+                         + "\n" + dateTimeFormat.format(schedule.getScheduleDate().getTime())
+                         + " - " + dateFormat.format(schedule.getRepeatValidTillDate().getTime());
             }
             ((TextView)findViewById(R.id.new_wizard_confirm_schedule_info)).setText(repeatText);
             setRightButton("Finish", new View.OnClickListener() {

@@ -34,7 +34,9 @@ android:weightSum="1"
         android:text="Enable repeat"
         android:id="@+id/new_wizard_repeat_enable"
         android:checked="false"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:enabled="true"
+        android:focusable="false" />
 
     <LinearLayout
         android:orientation="vertical"

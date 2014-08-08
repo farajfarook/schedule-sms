@@ -72,6 +72,11 @@ public class ScheduleListAdapter extends ArrayAdapter<Schedule> {
         }else{
             ((TextView)convertView.findViewById(R.id.schedule_item_schedule_info)).setTextColor(context.getResources().getColor(android.R.color.darker_gray));
         }
+        if(schedules.get(position).get_state().equalsIgnoreCase("completed")) {
+            convertView.setBackgroundColor(0x22000000);
+        }else{
+            convertView.setBackgroundColor(0x00000000);
+        }
         return convertView;
     }
 

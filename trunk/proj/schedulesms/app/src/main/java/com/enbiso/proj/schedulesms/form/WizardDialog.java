@@ -93,6 +93,7 @@ abstract public class WizardDialog{
             if(iconRes != null) {
                 icon.setImageResource(iconRes);
             }
+            ((TextView)findViewById(R.id.wizard_steps)).setText((currentStep + 1) + "/" + steps.size());
         }
     }
 

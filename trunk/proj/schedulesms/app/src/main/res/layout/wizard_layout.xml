@@ -11,12 +11,14 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:background="#ff242424">
+        android:background="#ff242424"
+        android:paddingLeft="6dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp">
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:id="@+id/wizard_icon"
             android:src="@drawable/wizard_icon"
             android:layout_gravity="center_vertical"
@@ -25,13 +27,30 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="heading"
+            android:text="Heading"
             android:id="@+id/wizard_heading"
             android:padding="10dp"
             android:textColor="@android:color/white"
             android:textSize="18dp"
             android:layout_gravity="center_vertical"
-            android:textStyle="bold" />
+            android:layout_marginRight="40dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="-40dp"
+            android:paddingTop="2dp"
+            android:paddingRight="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1/10"
+                android:id="@+id/wizard_steps"
+                android:layout_gravity="right"
+                android:textColor="#ff216d3e" />
+        </LinearLayout>
 
     </LinearLayout>
 
