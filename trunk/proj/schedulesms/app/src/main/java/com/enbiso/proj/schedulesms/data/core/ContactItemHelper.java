@@ -87,6 +87,9 @@ public class ContactItemHelper extends AbstractHelper{
                 models.add(model);
             } while (cursor.moveToNext());
         }
+        //fix - android.database.CursorWindowAllocationException Start
+        cursor.close();
+        //fix - android.database.CursorWindowAllocationException End
         return models;
     }
 
@@ -118,6 +121,9 @@ public class ContactItemHelper extends AbstractHelper{
                     pCur.close();
                 }
             }
+            //fix - android.database.CursorWindowAllocationException Start
+            cursor.close();
+            //fix - android.database.CursorWindowAllocationException End
             return null;
         }
 

@@ -168,6 +168,9 @@ public abstract class AbstractHelper {
                 models.add(model);
             } while (cursor.moveToNext());
         }
+        //fix - android.database.CursorWindowAllocationException Start
+        cursor.close();
+        //fix - android.database.CursorWindowAllocationException End
         return models;
     }
 
@@ -191,11 +194,10 @@ public abstract class AbstractHelper {
         Log.i("DB", sql);
         Cursor cursor = database.rawQuery(sql, whereArgs.toArray(new String[whereArgs.size()]));
 
+        AbstractModel model = null;
         if(cursor.moveToFirst()){
-            AbstractModel model = getModelInstance();
+            model = getModelInstance();
             model.populateWith(cursor, columns);
-            cursor.close();
-            return model;
         }
         cursor.close();
         return null;
