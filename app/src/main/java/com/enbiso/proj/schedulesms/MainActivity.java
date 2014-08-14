@@ -35,7 +35,7 @@ public class MainActivity extends ActionBarActivity
 
     public static final int PAGE_SCHEDULE = 1;
     public static final int PAGE_HISTORY = 2;
-    public static final int PAGE_SETTING = 3;
+//    public static final int PAGE_SETTING = 3;
 
     public static final int SETTING_RESULT = 2;
     /**
@@ -214,6 +214,11 @@ public class MainActivity extends ActionBarActivity
             case R.id.action_clear_history:
                 historyPopulator.setupClearHistory();
                 break;
+            case R.id.action_settings:
+                startSettingsActivity();
+                currentPage = -1;
+                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -267,10 +272,10 @@ public class MainActivity extends ActionBarActivity
                     rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
                     ((MainActivity)context).getSchedulePopulator().setup(rootView);
                     break;
-                case PAGE_SETTING:
-                    ((MainActivity)context).startSettingsActivity();
-                    ((MainActivity)context).currentPage = -1;
-                    break;
+//                case PAGE_SETTING:
+//                    ((MainActivity)context).startSettingsActivity();
+//                    ((MainActivity)context).currentPage = -1;
+//                    break;
             }
             return rootView;
         }

@@ -98,6 +98,7 @@ public class MessageReceiver extends BroadcastReceiver {
                 new NotificationCompat.Builder(context)
                         .setSmallIcon((type == NOTIFY_TYPE_OK)? R.drawable.notification_check: R.drawable.notification_cross)
                         .setContentTitle(title)
+                        .setAutoCancel(true)
                         .setContentText(text);
 
         Intent resultIntent = new Intent(context, MainActivity.class);
