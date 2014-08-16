@@ -22,12 +22,8 @@ import com.enbiso.proj.schedulesms.data.DatabaseHelper;
 import com.enbiso.proj.schedulesms.data.core.ContactItemHelper;
 import com.enbiso.proj.schedulesms.form.history.HistoryPopulator;
 import com.enbiso.proj.schedulesms.form.schedule.SchedulePopulator;
-import com.enbiso.proj.schedulesms.form.wizard.NewWizardDialog;
 import com.enbiso.proj.schedulesms.navigation.DrawerFragment;
 import com.enbiso.proj.schedulesms.scheduler.SchedulerService;
-//import com.github.amlcurran.showcaseview.ShowcaseView;
-//import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
-//import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 
 public class MainActivity extends ActionBarActivity
@@ -237,26 +233,18 @@ public class MainActivity extends ActionBarActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        private Context context;
-
+        public Context context;
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber, MainActivity mainActivity) {
+        public static PlaceholderFragment newInstance(int sectionNumber, Context context) {
             PlaceholderFragment fragment = new PlaceholderFragment();
-            fragment.setMainActivity(mainActivity);
+            fragment.context = context;
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
             return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        public void setMainActivity(MainActivity mainActivity) {
-            this.context = mainActivity;
         }
 
         @Override
