@@ -200,7 +200,9 @@ public abstract class AbstractHelper {
             model.populateWith(cursor, columns);
         }
         cursor.close();
-        return null;
+        //fix - Multiple duplication of schedules Start
+        return model;
+        //fix - Multiple duplication of schedules Finish
     }
 
     public List<AbstractModel> findBy(String name, int value){
@@ -226,6 +228,18 @@ public abstract class AbstractHelper {
         keys.add(new SearchEntry(SearchEntry.Type.STRING, name, SearchEntry.Search.EQUAL, String.valueOf(value)));
         return this.get(keys);
     }
+
+    //fix - Multiple duplication of schedules Start
+    public boolean update(AbstractModel model) {
+        ArrayList<SearchEntry> keys = new ArrayList<SearchEntry>();
+        keys.add(new SearchEntry(SearchEntry.Type.STRING, "_id", SearchEntry.Search.EQUAL, model.get_id()));
+        if(get(keys) != null){
+            return update(keys, model);
+        }else{
+            return false;
+        }
+    }
+    //fix - Multiple duplication of schedules End
 
     public boolean createOrUpdate(AbstractModel model) {
         ArrayList<SearchEntry> keys = new ArrayList<SearchEntry>();
