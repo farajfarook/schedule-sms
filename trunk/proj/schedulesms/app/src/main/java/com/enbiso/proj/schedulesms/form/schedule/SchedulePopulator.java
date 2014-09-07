@@ -89,11 +89,15 @@ public class SchedulePopulator extends AbstractPopulator {
                             dialogInterface.dismiss();
                         }else if(options[i].equalsIgnoreCase("ACTIVATE")){
                             schedule.set_state("active");
-                            scheduleHelper.createOrUpdate(schedule);
+                            //fix - Multiple duplication of schedules Start
+                            scheduleHelper.update(schedule);
+                            //fix - Multiple duplication of schedules End
                             ((MainActivity) context).getSchedulePopulator().resetup();
                         }else if(options[i].equalsIgnoreCase("DEACTIVATE")){
                             schedule.set_state("inactive");
-                            scheduleHelper.createOrUpdate(schedule);
+                            //fix - Multiple duplication of schedules Start
+                            scheduleHelper.update(schedule);
+                            //fix - Multiple duplication of schedules End
                             ((MainActivity) context).getSchedulePopulator().resetup();
                         }
                     }

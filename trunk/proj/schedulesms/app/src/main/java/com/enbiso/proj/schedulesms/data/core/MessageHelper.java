@@ -74,14 +74,18 @@ public class MessageHelper extends AbstractHelper{
                         } else {
                             schedule.setNextExecute(nextExecute);
                         }
-                        DatabaseHelper.getInstance().getHelper(ScheduleHelper.class).createOrUpdate(schedule);
+                        //fix - Multiple duplication of schedules Start
+                        DatabaseHelper.getInstance().getHelper(ScheduleHelper.class).update(schedule);
+                        //fix - Multiple duplication of schedules End
                     }
                 }
             }else if(schedule.getNextExecute().getTimeInMillis() <= calendar.getTimeInMillis()) {
                 //single execution
                 createMessageFromSchedule(schedule);
                 schedule.set_state("completed");
-                DatabaseHelper.getInstance().getHelper(ScheduleHelper.class).createOrUpdate(schedule);
+                //fix - Multiple duplication of schedules Start
+                DatabaseHelper.getInstance().getHelper(ScheduleHelper.class).update(schedule);
+                //fix - Multiple duplication of schedules End
             }
         }
     }
@@ -124,23 +128,31 @@ public class MessageHelper extends AbstractHelper{
 
     public void markAsSent(Message message){
         message.set_state("sent");
-        this.createOrUpdate(message);
+        //fix - Multiple duplication of schedules Start
+        this.update(message);
+        //fix - Multiple duplication of schedules End
     }
 
     public void markAsFailed(Message message, String error){
         message.set_state("failed");
         message.setError(error);
-        this.createOrUpdate(message);
+        //fix - Multiple duplication of schedules Start
+        this.update(message);
+        //fix - Multiple duplication of schedules End
     }
 
     public void markAsDelivered(Message message){
         message.set_state("delivered");
-        this.createOrUpdate(message);
+        //fix - Multiple duplication of schedules Start
+        this.update(message);
+        //fix - Multiple duplication of schedules End
     }
 
     public void markAsSending(Message message){
         message.set_state("sending");
         message.setExecuted(Calendar.getInstance());
-        this.createOrUpdate(message);
+        //fix - Multiple duplication of schedules Start
+        this.update(message);
+        //fix - Multiple duplication of schedules End
     }
 }
